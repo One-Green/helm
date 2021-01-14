@@ -1,7 +1,8 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: telegraf
+  name: "{{ .Release.Name}}-telegraf-config"
+  namespace: "{{ .Release.Namespace }}"
 data:
   # Configuration for
   # mqtt consumer to influx db sink
@@ -117,11 +118,11 @@ data:
       ## urls will be written to each interval.
       # urls = ["unix:///var/run/influxdb.sock"]
       # urls = ["udp://127.0.0.1:8089"]
-      urls = ["http://influxdb:8086"]
+      urls = ["http://${INFLUX_HOST}:${INFLUX_PORT}"]
 
       ## The target database for metrics; will be created as needed.
       ## For UDP url endpoint database needs to be configured on server side.
-      database = "plant_keeper"
+      database = "${INFLUXDB_DB}"
 
       ## The value of this tag will be used to determine the database.  If this
       ## tag is not set the 'database' option is used as the default.
@@ -154,8 +155,8 @@ data:
       # timeout = "5s"
 
       ## HTTP Basic Auth
-      username = "admin"
-      password = "supersecretpassword"
+      username = "${INFLUXDB_ADMIN_USER}"
+      password = "${INFLUXDB_ADMIN_PASSWORD}"
 
       ## HTTP User-Agent
       # user_agent = "telegraf"
@@ -194,7 +195,7 @@ data:
     #   ##   example: servers = ["tcp://localhost:1883"]
     #   ##            servers = ["ssl://localhost:1883"]
     #   ##            servers = ["ws://localhost:1883"]
-       servers = ["tcp://mqtt:1883"]
+       servers = ["tcp://${MQTT_HOST}:${MQTT_PORT}"]
     #
     #   ## Topics that will be subscribed to.
        topics = [
@@ -247,8 +248,8 @@ data:
     #   # client_id = ""
     #
     #   ## Username and password to connect MQTT server.
-       username = "admin"
-       password = "admin"
+       username = "${MOSQUITTO_USERNAME}"
+       password = "${MOSQUITTO_PASSWORD}"
     #
     #   ## Optional TLS Config
     #   # tls_ca = "/etc/telegraf/ca.pem"
@@ -271,7 +272,7 @@ data:
     #   ##            servers = ["ssl://localhost:1883"]
     #   ##            servers = ["ws://localhost:1883"]
        name_override = "controllers"
-       servers = ["tcp://mqtt:1883"]
+       servers = ["tcp://${MQTT_HOST}:${MQTT_PORT}"]
 
     #
     #   ## Topics that will be subscribed to.
@@ -320,8 +321,8 @@ data:
     #   # client_id = ""
     #
     #   ## Username and password to connect MQTT server.
-       username = "admin"
-       password = "admin"
+       username = "${MOSQUITTO_USERNAME}"
+       password = "${MOSQUITTO_PASSWORD}"
     #
     #   ## Optional TLS Config
     #   # tls_ca = "/etc/telegraf/ca.pem"
