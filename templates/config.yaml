@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: "{{ .Release.Name }}-config"
+  namespace: "{{ .Release.Namespace }}"
+data:
+  # postgres configuration
+  POSTGRES_HOST: "{{ .Release.Name }}-tsdb"
+  POSTGRES_PORT: "5432"
+  POSTGRES_DB: "one_green"
+  # mqtt configuration
+  MQTT_HOST: "{{ .Release.Name}}-mqtt"
+  MQTT_PORT: "1883"
+  # influxdb configuration
+  INFLUX_HOST: "{{ .Release.Name }}-influxdb"
+  INFLUXDB_DB: "one_green"
+  INFLUXDB_HTTP_AUTH_ENABLED: "true"
