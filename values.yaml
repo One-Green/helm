@@ -3,8 +3,11 @@
 # Declare variables to be passed into your templates.
 
 timeScaleDB:
-  image:
-  storage:
+  image: "timescale/timescaledb:latest-pg11"
+  persistent:
+    enablePersistant: "true"
+    storageClass: "default"
+    volumeRequest: "1Gi"
   secret:
     user: "postgres"
     password: "anyrandompassword"
