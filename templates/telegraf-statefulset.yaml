@@ -1,43 +1,73 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: telegraf
+  name: "{{ .Release.Name }}-telegraf"
+  namespace: "{{ .Release.Namespace }}"
 spec:
   selector:
     matchLabels:
-      app: telegraf
-  serviceName: telegraf
+      app: "{{ .Release.Name }}-telegraf"
+  serviceName: "{{ .Release.Name }}-telegraf"
   replicas: 1
   template:
     metadata:
       labels:
-        app: telegraf
+        app: "{{ .Release.Name }}-telegraf"
     spec:
       containers:
-      - name: telegraf
-        imagePullPolicy: IfNotPresent
-        image: telegraf:1.16.0
-        env:
-          - name: MQTT_HOST
-            value: "mqtt"
-          - name: MQTT_PORT
-            value: "1883"
-          - name: MQTT_USER
-            value: "admin"
-          - name: MQTT_PASSWORD
-            value: "admin"
-          - name: INFLUXDB_URL
-            value: "http://influxdb:8086"
-          - name: INFLUXDB_USER
-            value: "admin"
-          - name: INFLUXDB_USER_PASSWORD
-            value: "supersecretpassword"
-          - name: INFLUXDB
-            value: "plant_keeper"
-        volumeMounts:
-        - name: conf
-          mountPath: /etc/telegraf
+        - name: telegraf
+          imagePullPolicy: IfNotPresent
+          image: {{ .Values.telegraf.image }}
+          env:
+            - name: MQTT_HOST
+              valueFrom:
+                configMapKeyRef:
+                  key: MQTT_HOST
+                  name: "{{ .Release.Name }}-config"
+            - name: MQTT_PORT
+              valueFrom:
+                configMapKeyRef:
+                  key: MQTT_PORT
+                  name: "{{ .Release.Name }}-config"
+            - name: MOSQUITTO_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  key: MOSQUITTO_USERNAME
+                  name: "{{ .Release.Name }}-secrets"
+            - name: MOSQUITTO_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: MOSQUITTO_PASSWORD
+                  name: "{{ .Release.Name }}-secrets"
+            - name: INFLUX_HOST
+              valueFrom:
+                configMapKeyRef:
+                  key: INFLUX_HOST
+                  name: "{{ .Release.Name }}-config"
+            - name: INFLUX_PORT
+              valueFrom:
+                configMapKeyRef:
+                  key: INFLUX_PORT
+                  name: "{{ .Release.Name }}-config"
+            - name: INFLUXDB_ADMIN_USER
+              valueFrom:
+                secretKeyRef:
+                  key: INFLUXDB_ADMIN_USER
+                  name: "{{ .Release.Name }}-secrets"
+            - name: INFLUXDB_USER_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: INFLUXDB_ADMIN_PASSWORD
+                  name: "{{ .Release.Name }}-secrets"
+            - name: INFLUXDB_DB
+              valueFrom:
+                configMapKeyRef:
+                  key: INFLUXDB_DB
+                  name: "{{ .Release.Name }}-config"
+          volumeMounts:
+            - name: conf
+              mountPath: /etc/telegraf
       volumes:
         - name: conf
           configMap:
-            name: telegraf
+            name: "{{ .Release.Name}}-telegraf-config"
