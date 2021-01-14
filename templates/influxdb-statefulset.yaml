@@ -4,14 +4,14 @@ metadata:
   name: "{{ .Release.Name }}-influxdb"
   namespace: "{{ .Release.Namespace }}"
 spec:
-  serviceName: influxdb
+  serviceName: "{{ .Release.Name }}-influxdb"
   selector:
     matchLabels:
       app: "{{ .Release.Name }}-influxdb"
   replicas: 1
   template:
     metadata:
-      name: influxdb
+      name: "{{ .Release.Name }}-influxdb"
       labels:
         app: "{{ .Release.Name }}-influxdb"
     spec:
@@ -40,20 +40,22 @@ spec:
                     key: INFLUXDB_ADMIN_PASSWORD
                     name: "{{ .Release.Name }}-secrets"
           volumeMounts:
-            - name: data
+            - name: "{{ .Release.Name }}-influxdb-data"
               mountPath: /var/lib/influxdb
           ports:
             - containerPort: 8086
+  {{ if eq .Values.influxDB.persistent.enablePersistant "true"}}
   volumeClaimTemplates:
     - metadata:
-        name: data
+        name: "{{ .Release.Name }}-influxdb-data"
       spec:
-        storageClassName: "default"
+        storageClassName: "{{ .Values.influxDB.persistent.storageClass }}"
         accessModes:
           - "ReadWriteOnce"
         resources:
           requests:
-            storage: 1Gi
+            storage: "{{ .Values.influxDB.persistent.volumeRequest }}"
+  {{ end }}
 ---
 apiVersion: v1
 kind: Service

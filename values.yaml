@@ -18,6 +18,16 @@ mqtt:
     user: "mqtt"
     password: "anyrandompassword"
 
+influxDB:
+  image: "influxdb:1.8.3"
+  persistent:
+    enablePersistant: "true"
+    storageClass: "default"
+    volumeRequest: "1Gi"
+  secret:
+    user: "admin"
+    password: "anyrandompassword"
+
 api:
   image: ""
   replicas: ""
