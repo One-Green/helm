@@ -18,9 +18,17 @@ spec:
         - name: mqtt
           image: "{{ .Values.mqtt.image }}"
           imagePullPolicy: IfNotPresent
-          envFrom:
-            - secretRef:
-                name: "{{ .Release.Name }}-secrets"
+          env:
+            - name: MOSQUITTO_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  key: MOSQUITTO_USERNAME
+                  name: "{{ .Release.Name }}-secrets"
+            - name: MOSQUITTO_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: MOSQUITTO_PASSWORD
+                  name: "{{ .Release.Name }}-secrets"
           ports:
             - containerPort: 1883
 ---
