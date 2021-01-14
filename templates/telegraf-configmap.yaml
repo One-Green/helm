@@ -6,6 +6,7 @@ metadata:
 data:
   # Configuration for
   # mqtt consumer to influx db sink
+  # TODO: mv consumer topics to values.yaml
   telegraf.conf: |
     # Telegraf Configuration
     #
