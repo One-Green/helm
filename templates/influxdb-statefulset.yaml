@@ -39,9 +39,11 @@ spec:
                 - secretKeyRef:
                     key: INFLUXDB_ADMIN_PASSWORD
                     name: "{{ .Release.Name }}-secrets"
+          {{ if eq .Values.influxDB.persistent.enablePersistant "true"}}
           volumeMounts:
             - name: "{{ .Release.Name }}-influxdb-data"
               mountPath: /var/lib/influxdb
+          {{ end }}
           ports:
             - containerPort: 8086
   {{ if eq .Values.influxDB.persistent.enablePersistant "true"}}
