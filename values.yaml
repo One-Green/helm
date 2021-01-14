@@ -28,6 +28,10 @@ influxDB:
     user: "admin"
     password: "anyrandompassword"
 
+telegraf:
+  image: "telegraf:1.16.0"
+
+
 api:
   image: ""
   replicas: ""
