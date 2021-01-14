@@ -1,57 +1,68 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: influxdb
+  name: "{{ .Release.Name }}-influxdb"
+  namespace: "{{ .Release.Namespace }}"
 spec:
   serviceName: influxdb
   selector:
     matchLabels:
-      app: influxdb
+      app: "{{ .Release.Name }}-influxdb"
   replicas: 1
   template:
     metadata:
       name: influxdb
       labels:
-        app: influxdb
+        app: "{{ .Release.Name }}-influxdb"
     spec:
       containers:
-      - name: influxdb
-        image: "influxdb:1.8.3"
-        env:
-          - name: INFLUXDB_DB
-            value: "plant_keeper"
-          - name: INFLUXDB_HTTP_AUTH_ENABLED
-            value: "true"
-          - name: INFLUXDB_ADMIN_USER
-            value: "admin"
-          - name: INFLUXDB_ADMIN_PASSWORD
-            value: "supersecretpassword"
-          - name: INFLUXDB_USER
-            value: "telegraf"
-          - name: INFLUXDB_USER_PASSWORD
-            value: "supersecretpassword"
-        volumeMounts:
-          - name: data
-            mountPath: /var/lib/influxdb
-        ports:
-          - containerPort: 8086
+        - name: influxdb
+          image: "{{ .Values.influxDB.image }}"
+          env:
+            - name: INFLUXDB_DB
+              valueFrom:
+                - configMapKeyRef:
+                    key: "INFLUXDB_DB"
+                    name: "{{ .Release.Name }}-config"
+            - name: INFLUXDB_HTTP_AUTH_ENABLED
+              valueFrom:
+                - configMapKeyRef:
+                    key: "INFLUXDB_HTTP_AUTH_ENABLED"
+                    name: "{{ .Release.Name }}-config"
+            - name: INFLUXDB_ADMIN_USER
+              valueFrom:
+                - secretKeyRef:
+                    key: INFLUXDB_ADMIN_USER
+                    name: "{{ .Release.Name }}-secrets"
+            - name: INFLUXDB_ADMIN_PASSWORD
+              valueFrom:
+                - secretKeyRef:
+                    key: INFLUXDB_ADMIN_PASSWORD
+                    name: "{{ .Release.Name }}-secrets"
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/influxdb
+          ports:
+            - containerPort: 8086
   volumeClaimTemplates:
-  - metadata:
-      name: data
-    spec:
-      accessModes:
-        - "ReadWriteOnce"
-      resources:
-        requests:
-          storage: 1Gi
+    - metadata:
+        name: data
+      spec:
+        storageClassName: "default"
+        accessModes:
+          - "ReadWriteOnce"
+        resources:
+          requests:
+            storage: 1Gi
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: influxdb
+  name: "{{ .Release.Name }}-influxdb"
+  namespace: "{{ .Release.Namespace }}"
 spec:
   selector:
-    app: influxdb
+    app: "{{ .Release.Name }}-influxdb"
   ports:
     - port: 8086
   type: ClusterIP
