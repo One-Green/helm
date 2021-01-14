@@ -12,6 +12,12 @@ timeScaleDB:
     user: "postgres"
     password: "anyrandompassword"
 
+mqtt:
+  image: "docker.io/shanisma/eclipse-mosquitto:1.6.12"
+  secret:
+    user: "mqtt"
+    password: "anyrandompassword"
+
 api:
   image: ""
   replicas: ""
