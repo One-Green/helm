@@ -1,0 +1,95 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api
+spec:
+  selector:
+    matchLabels:
+      app: api
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: api
+    spec:
+      initContainers:
+        - name: initdb
+          image: "docker.io/shanisma/k8s-one-green:latest"
+          command: ['/bin/bash', '-c']
+          args: ["python init.py"]
+          imagePullPolicy: Always
+          env:
+            - name: POSTGRES_HOST
+              value: "db"
+            - name: POSTGRES_PORT
+              value: "5432"
+            - name: POSTGRES_USER
+              value: "postgres"
+            - name: POSTGRES_PASSWORD
+              value: "postgres"
+            - name: POSTGRES_DB
+              value: "postgres"
+            - name: MQTT_HOST
+              value: "mqtt"
+            - name: MQTT_PORT
+              value: "1883"
+            - name: MQTT_USER
+              value: "admin"
+            - name: MQTT_PASSWORD
+              value: "admin"
+      containers:
+      - name: api
+        image: "docker.io/shanisma/k8s-one-green:latest"
+        command: ['/bin/bash', '-c']
+        args: ['gunicorn --workers=1 --bind=0.0.0.0:8080 --access-logfile - --log-file - --log-level=debug project.wsgi']
+        imagePullPolicy: Always
+        env:
+          - name: POSTGRES_HOST
+            value: "db"
+          - name: POSTGRES_PORT
+            value: "5432"
+          - name: POSTGRES_USER
+            value: "postgres"
+          - name: POSTGRES_PASSWORD
+            value: "postgres"
+          - name: POSTGRES_DB
+            value: "postgres"
+          - name: MQTT_HOST
+            value: "mqtt"
+          - name: MQTT_PORT
+            value: "1883"
+          - name: MQTT_USER
+            value: "admin"
+          - name: MQTT_PASSWORD
+            value: "admin"
+        ports:
+          - containerPort: 8080
+            name: api
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: api
+spec:
+  selector:
+    app: api
+  ports:
+    - port: 8080
+  type: ClusterIP
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: api
+spec:
+  rules:
+  - host: api.010e7d5e-3a86-4c87-a4bc-8d7a82bf5d2e.nodes.k8s.fr-par.scw.cloud
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: api
+            port:
+              number: 8080

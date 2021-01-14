@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: telegraf
+spec:
+  selector:
+    matchLabels:
+      app: telegraf
+  serviceName: telegraf
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: telegraf
+    spec:
+      containers:
+      - name: telegraf
+        imagePullPolicy: IfNotPresent
+        image: telegraf:1.16.0
+        env:
+          - name: MQTT_HOST
+            value: "mqtt"
+          - name: MQTT_PORT
+            value: "1883"
+          - name: MQTT_USER
+            value: "admin"
+          - name: MQTT_PASSWORD
+            value: "admin"
+          - name: INFLUXDB_URL
+            value: "http://influxdb:8086"
+          - name: INFLUXDB_USER
+            value: "admin"
+          - name: INFLUXDB_USER_PASSWORD
+            value: "supersecretpassword"
+          - name: INFLUXDB
+            value: "plant_keeper"
+        volumeMounts:
+        - name: conf
+          mountPath: /etc/telegraf
+      volumes:
+        - name: conf
+          configMap:
+            name: telegraf

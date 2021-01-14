@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: "{{ .Release.Name }}-tsdb"
+  namespace: "{{ .Release.Namespace }}"
+spec:
+  selector:
+    matchLabels:
+      app: "{{ .Release.Name }}-tsdb"
+  serviceName: "{{ .Release.Name }}-tsdb"
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: "{{ .Release.Name }}-tsdb"
+    spec:
+      containers:
+      - name: timescaledb
+        image: timescale/timescaledb:latest-pg11
+        envFrom:
+          - secretRef:
+              name: "{{ .Release.Name }}-secrets"
+        ports:
+        - containerPort: 5432
+        volumeMounts:
+        - name: conf
+          mountPath: /etc/postgresql.conf
+        - name: "{{ .Release.Name }}-tsdb-data"
+          mountPath: /var/lib/postgresql
+      volumes:
+        - name: conf
+          configMap:
+            name: "{{ .Release.Name }}-tsdb-conf"
+  volumeClaimTemplates:
+  - metadata:
+      name: "{{ .Release.Name }}-tsdb-data"
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: "1Gi"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: "{{ .Release.Name }}-tsdb"
+  namespace: "{{ .Release.Namespace }} "
+spec:
+  selector:
+    app: "{{ .Release.Name }}-tsdb"
+  ports:
+    - port: 5432
+  type: ClusterIP

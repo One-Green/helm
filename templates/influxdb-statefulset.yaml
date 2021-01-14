@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: influxdb
+spec:
+  serviceName: influxdb
+  selector:
+    matchLabels:
+      app: influxdb
+  replicas: 1
+  template:
+    metadata:
+      name: influxdb
+      labels:
+        app: influxdb
+    spec:
+      containers:
+      - name: influxdb
+        image: "influxdb:1.8.3"
+        env:
+          - name: INFLUXDB_DB
+            value: "plant_keeper"
+          - name: INFLUXDB_HTTP_AUTH_ENABLED
+            value: "true"
+          - name: INFLUXDB_ADMIN_USER
+            value: "admin"
+          - name: INFLUXDB_ADMIN_PASSWORD
+            value: "supersecretpassword"
+          - name: INFLUXDB_USER
+            value: "telegraf"
+          - name: INFLUXDB_USER_PASSWORD
+            value: "supersecretpassword"
+        volumeMounts:
+          - name: data
+            mountPath: /var/lib/influxdb
+        ports:
+          - containerPort: 8086
+  volumeClaimTemplates:
+  - metadata:
+      name: data
+    spec:
+      accessModes:
+        - "ReadWriteOnce"
+      resources:
+        requests:
+          storage: 1Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: influxdb
+spec:
+  selector:
+    app: influxdb
+  ports:
+    - port: 8086
+  type: ClusterIP
