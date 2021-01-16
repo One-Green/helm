@@ -2,6 +2,25 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
+sprinklers-controller:
+  enable: "true"
+  image: "docker.io/shanisma/k8s-one-green:latest"
+
+water-controller:
+  enable: "true"
+  image: "docker.io/shanisma/k8s-one-green:latest"
+
+api:
+  image: "docker.io/shanisma/k8s-one-green:latest"
+  imagePullPolicy: "IfNotPresent"
+  replicas: "1"
+  log:
+    level: "debug"
+  ingress:
+    enable: "false"
+    host: ""
+
+
 timeScaleDB:
   image: "timescale/timescaledb:latest-pg11"
   persistent:
@@ -10,12 +29,6 @@ timeScaleDB:
     volumeRequest: "1Gi"
   secret:
     user: "postgres"
-    password: "anyrandompassword"
-
-mqtt:
-  image: "docker.io/shanisma/eclipse-mosquitto:1.6.12"
-  secret:
-    user: "mqtt"
     password: "anyrandompassword"
 
 influxDB:
@@ -31,8 +44,8 @@ influxDB:
 telegraf:
   image: "telegraf:1.16.0"
 
-
-api:
-  image: ""
-  replicas: ""
-  test: ""
+mqtt:
+  image: "docker.io/shanisma/eclipse-mosquitto:1.6.12"
+  secret:
+    user: "mqtt"
+    password: "anyrandompassword"
