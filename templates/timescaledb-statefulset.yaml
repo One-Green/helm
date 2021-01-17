@@ -15,10 +15,16 @@ spec:
     spec:
       containers:
         - name: timescaledb
-          image: "{{ .Values.timeScaleDB.image }} "
+          image: "{{ .Values.timeScaleDB.image }}"
           envFrom:
             - secretRef:
                 name: "{{ .Release.Name }}-secrets"
+          env:
+            - name: POSTGRES_DB
+              valueFrom:
+                configMapKeyRef:
+                  key: POSTGRES_DB
+                  name: "{{ .Release.Name }}-config"
           ports:
             - containerPort: 5432
           volumeMounts:
@@ -27,7 +33,7 @@ spec:
             {{ if eq .Values.timeScaleDB.persistent.enablePersistant "true" }}
             - name: "{{ .Release.Name }}-tsdb-data"
               mountPath: /var/lib/postgresql
-            {{ end }}
+      {{ end }}
       volumes:
         - name: conf
           configMap:
