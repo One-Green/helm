@@ -41,5 +41,5 @@ spec:
   type: NodePort
   ports:
     - port: 1883
-      nodePort: 30180
+      nodePort: {{ .Values.mqtt.NodePort }}
       name: mqtt
