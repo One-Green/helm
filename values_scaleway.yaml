@@ -26,7 +26,7 @@ timeScaleDB:
   image: "timescale/timescaledb:latest-pg11"
   persistent:
     enablePersistant: "true"
-    storageClass: "default"
+    storageClass: "scw-bssd"
     volumeRequest: "1Gi"
   secret:
     user: "postgres"
@@ -36,7 +36,7 @@ influxDB:
   image: "influxdb:1.8.3"
   persistent:
     enablePersistant: "true"
-    storageClass: "default"
+    storageClass: "scw-bssd"
     volumeRequest: "1Gi"
   secret:
     user: "admin"
