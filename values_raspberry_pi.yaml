@@ -1,21 +1,19 @@
-# Default values for One-Green stack chart.
-# This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
+# Use for microk8s + ubuntu raspberry pi 4 deployment
 
-cloudProvider: "others"
+cloudProvider: "microK8s"
 
 sprinklerController:
   enable: "true"
-  image: "docker.io/shanisma/k8s-one-green:latest"
+  image: "docker.io/shanisma/k8s-one-green:arm-latest"
   imagePullPolicy: "Always"
 
 waterController:
   enable: "true"
-  image: "docker.io/shanisma/k8s-one-green:latest"
+  image: "docker.io/shanisma/k8s-one-green:arm-latest"
   imagePullPolicy: "Always"
 
 api:
-  image: "docker.io/shanisma/k8s-one-green:latest"
+  image: "docker.io/shanisma/k8s-one-green:arm-latest"
   imagePullPolicy: "Always"
   replicas: 1
   log:
@@ -28,7 +26,7 @@ timeScaleDB:
   image: "timescale/timescaledb:latest-pg11"
   persistent:
     enablePersistant: "true"
-    storageClass: "default"
+    storageClass: "scw-bssd"
     volumeRequest: "1Gi"
   secret:
     user: "postgres"
@@ -38,7 +36,7 @@ influxDB:
   image: "influxdb:1.8.3"
   persistent:
     enablePersistant: "true"
-    storageClass: "default"
+    storageClass: "scw-bssd"
     volumeRequest: "1Gi"
   secret:
     user: "admin"

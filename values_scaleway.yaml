@@ -2,6 +2,8 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
+cloudProvider: "ScaleWay"
+
 sprinklerController:
   enable: "true"
   image: "docker.io/shanisma/k8s-one-green:latest"
