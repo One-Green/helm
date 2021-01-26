@@ -5,11 +5,12 @@ metadata:
   name: {{ .Release.Name }}-grafana
   annotations:
     kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
     - http:
         paths:
-          - path: /
+          - path: /{{ .Release.Name }}-grafana/
             backend:
               serviceName: {{ .Release.Name }}-grafana
               servicePort: 80
