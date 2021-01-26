@@ -53,3 +53,17 @@ mqtt:
   secret:
     user: "mqtt"
     password: "anyrandompassword"
+
+grafana:
+  persistence:
+    enabled: true
+    type: "pvc"
+    size: "1Gi"
+    storageClassName: "default"
+  ingress:
+    enabled: false
+    annotations: { }
+    labels: { }
+    path: /
+    hosts:
+      - chart-example.local
