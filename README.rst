@@ -61,7 +61,9 @@ Configure like :
 
     - Section "InfluxDB Details"
         Database: one_green
+
         User: admin
+
         Password: anyrandompassword
 
 Click on "Save and Test"
