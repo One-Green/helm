@@ -51,3 +51,10 @@ mqtt:
   secret:
     user: "mqtt"
     password: "anyrandompassword"
+
+grafana:
+  persistence:
+    enabled: true
+    type: "pvc"
+    size: "1Gi"
+    storageClassName: "microk8s-hostpath"
