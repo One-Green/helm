@@ -62,4 +62,6 @@ grafana:
     enabled: false
   grafana.ini:
     server:
+      # change 192.168.0.5 by your raspberry pi local IP or hostname
       root_url: "http://192.168.0.5/one-green-core-grafana/"
+      serve_from_sub_path: true
