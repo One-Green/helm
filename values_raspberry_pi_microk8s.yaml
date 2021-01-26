@@ -58,3 +58,8 @@ grafana:
     type: "pvc"
     size: "1Gi"
     storageClassName: "microk8s-hostpath"
+  ingress:
+    enabled: false
+  grafana.ini:
+    server:
+      root_url: "http://192.168.0.5/one-green-core-grafana/"
