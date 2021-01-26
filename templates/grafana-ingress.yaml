@@ -1,0 +1,16 @@
+{{ if eq .Values.cloudProvider "microK8s"}}
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: {{ .Release.Name }}-grafana
+  annotations:
+    kubernetes.io/ingress.class: nginx
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /
+            backend:
+              serviceName: {{ .Release.Name }}-grafana
+              servicePort: 80
+  {{ end }}
