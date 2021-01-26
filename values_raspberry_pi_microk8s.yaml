@@ -46,7 +46,7 @@ telegraf:
   image: "telegraf:1.16.0"
 
 mqtt:
-  image: "docker.io/shanisma/eclipse-mosquitto:1.6.12"
+  image: "docker.io/shanisma/eclipse-mosquitto:arm-latest"
   NodePort: 30181
   secret:
     user: "mqtt"
