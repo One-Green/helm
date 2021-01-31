@@ -14,6 +14,15 @@ waterController:
   image: "docker.io/shanisma/k8s-one-green:latest"
   imagePullPolicy: "Always"
 
+adminUI:
+  enable: "true"
+  image: "docker.io/shanisma/k8s-one-green-admin-ui:latest"
+  replicas: 1
+  imagePullPolicy: "Always"
+  ingress:
+    enable: "true"
+    host: ""
+
 api:
   image: "docker.io/shanisma/k8s-one-green:latest"
   imagePullPolicy: "Always"

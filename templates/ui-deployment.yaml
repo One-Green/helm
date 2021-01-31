@@ -1,0 +1,74 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "{{ .Release.Name }}-ui"
+  labels:
+    app: "{{ .Release.Name }}-ui"
+spec:
+  replicas: {{ .Values.adminUI.replicas }}
+  template:
+    metadata:
+      name: "{{ .Release.Name }}-ui"
+      labels:
+        app: "{{ .Release.Name }}-ui"
+    spec:
+      containers:
+        - name: core-ui
+          image: "{{ .Values.adminUI.image }}"
+          imagePullPolicy: "{{ .Values.adminUI.imagePullPolicy }}"
+          command: [ '/bin/bash', '-c' ]
+          args: [ "streamlit run ui.py" ]
+          env:
+            - name: ONE_GREEN_CORE_API
+              value: "http://{{ .Release.Name }}-api:8080"
+          ports:
+            - containerPort: 8501
+      restartPolicy: Always
+  selector:
+    matchLabels:
+      app: "{{ .Release.Name }}-ui"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: "{{ .Release.Name }}-ui"
+spec:
+  selector:
+    name: "{{ .Release.Name }}-ui"
+  ports:
+    - port: 8501
+  type: ClusterIP
+---
+  {{ if eq .Values.adminUI.ingress.enable "true "}}
+  {{ if eq .Values.cloudProvider "microK8s"}}
+  {{/*Specific ingress to microk8s ingress*/}}
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: {{ .Release.Name }}-ui
+spec:
+  ingressClassName: public
+  rules:
+    - http:
+        paths:
+          - path: /
+            backend:
+              serviceName: "{{ .Release.Name }}-ui"
+              servicePort: 8501
+  {{ else }}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: core-ui
+spec:
+  rules:
+    - host: {{ .Values.adminUI.ingress.host }}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              serviceName: "{{ .Release.Name }}-ui"
+              servicePort: 8501
+  {{ end }}
+  {{ end }}
