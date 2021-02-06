@@ -17,7 +17,11 @@ spec:
           image: "{{ .Values.adminUI.image }}"
           imagePullPolicy: "{{ .Values.adminUI.imagePullPolicy }}"
           command: [ '/bin/bash', '-c' ]
+          {{ if eq .Values.cloudProvider "microK8s" }}
+          args: [ "streamlit run ui.py --server.baseUrlPath {{ .Release.Name}}-ui" ]
+          {{ else }}
           args: [ "streamlit run ui.py" ]
+          {{ end }}
           env:
             - name: ONE_GREEN_CORE_API
               value: "http://{{ .Release.Name }}-api:8080"
