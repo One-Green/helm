@@ -34,7 +34,7 @@ metadata:
   name: "{{ .Release.Name }}-ui"
 spec:
   selector:
-    name: "{{ .Release.Name }}-ui"
+    app: "{{ .Release.Name }}-ui"
   ports:
     - port: 8501
   type: ClusterIP
