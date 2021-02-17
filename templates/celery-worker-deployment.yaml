@@ -6,7 +6,7 @@ spec:
   selector:
     matchLabels:
       app: "{{ .Release.Name }}-worker"
-  replicas: {{ .Values.api.replicas }}
+  replicas: {{ .Values.controllerWorker.replicas }}
   template:
     metadata:
       labels:
@@ -65,3 +65,19 @@ spec:
                   key: MOSQUITTO_PASSWORD
                   name: "{{ .Release.Name }}-secrets"
 ---
+apiVersion: autoscaling/v2beta1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: "{{ .Release.Name }}-worker"
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: "{{ .Release.Name }}-worker"
+  minReplicas: {{ .Values.controllerWorker.HPA.minReplicas }}
+  maxReplicas: {{ .Values.controllerWorker.HPA.maxReplicas }}
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        targetAverageUtilization: {{ .Values.controllerWorker.HPA.cpu.targetAverageUtilization }}
