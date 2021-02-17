@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "{{ .Release.Name }}-worker"
+spec:
+  selector:
+    matchLabels:
+      app: "{{ .Release.Name }}-worker"
+  replicas: {{ .Values.api.replicas }}
+  template:
+    metadata:
+      labels:
+        app: "{{ .Release.Name }}-worker"
+    spec:
+      containers:
+        - name: worker
+          image: "{{ .Values.controllerWorker.image }}"
+          command: [ '/bin/bash', '-c' ]
+          args: [ 'celery -A project worker -l {{ .Values.controllerWorker.log.level}}' ]
+          imagePullPolicy: "{{ .Values.controllerWorker.imagePullPolicy }}"
+          env:
+            - name: POSTGRES_HOST
+              valueFrom:
+                configMapKeyRef:
+                  key: POSTGRES_HOST
+                  name: "{{ .Release.Name }}-config"
+            - name: POSTGRES_PORT
+              valueFrom:
+                configMapKeyRef:
+                  key: POSTGRES_PORT
+                  name: "{{ .Release.Name }}-config"
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  key: POSTGRES_USER
+                  name: "{{ .Release.Name }}-secrets"
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: POSTGRES_PASSWORD
+                  name: "{{ .Release.Name }}-secrets"
+            - name: POSTGRES_DB
+              valueFrom:
+                configMapKeyRef:
+                  key: POSTGRES_DB
+                  name: "{{ .Release.Name }}-config"
+            - name: MQTT_HOST
+              valueFrom:
+                configMapKeyRef:
+                  key: MQTT_HOST
+                  name: "{{ .Release.Name }}-config"
+            - name: MQTT_PORT
+              valueFrom:
+                configMapKeyRef:
+                  key: MQTT_PORT
+                  name: "{{ .Release.Name }}-config"
+            - name: MQTT_USER
+              valueFrom:
+                secretKeyRef:
+                  key: MOSQUITTO_USERNAME
+                  name: "{{ .Release.Name }}-secrets"
+            - name: MQTT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: MOSQUITTO_PASSWORD
+                  name: "{{ .Release.Name }}-secrets"
+---
