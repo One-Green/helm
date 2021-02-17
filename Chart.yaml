@@ -8,6 +8,9 @@ dependencies:
   - name: grafana
     version: 6.2.0
     repository: https://grafana.github.io/helm-charts
+  - name: redis
+    version: 12.7.4
+    repository: https://charts.bitnami.com/bitnami
 maintainers:
   - name: Shanmugathas Vigneswaran (github @shanisma)
     email: shanmugathas.vigneswaran@outlook.fr
