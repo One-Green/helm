@@ -66,4 +66,14 @@ spec:
                 secretKeyRef:
                   key: MOSQUITTO_PASSWORD
                   name: "{{ .Release.Name }}-secrets"
+            - name: REDIS_HOST
+              valueFrom:
+                configMapKeyRef:
+                  key: REDIS_HOST
+                  name: "{{ .Release.Name }}-config"
+            - name: REDIS_PORT
+              valueFrom:
+                configMapKeyRef:
+                  key: REDIS_PORT
+                  name: "{{ .Release.Name }}-config"
   {{ end }}

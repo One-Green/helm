@@ -15,3 +15,6 @@ data:
   INFLUX_PORT: "8086"
   INFLUXDB_DB: "one_green"
   INFLUXDB_HTTP_AUTH_ENABLED: "true"
+  # REDIS (for Celery IoT async controller
+  REDIS_HOST: "{{ .Release.Name }}-redis-headless"
+  REDIS_PORT: "6379"

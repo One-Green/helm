@@ -19,6 +19,8 @@ spec:
           args: [ 'celery -A project worker -l {{ .Values.controllerWorker.log.level}}' ]
           imagePullPolicy: "{{ .Values.controllerWorker.imagePullPolicy }}"
           env:
+            - name: C_FORCE_ROOT
+              value: "true"
             - name: POSTGRES_HOST
               valueFrom:
                 configMapKeyRef:
@@ -64,6 +66,16 @@ spec:
                 secretKeyRef:
                   key: MOSQUITTO_PASSWORD
                   name: "{{ .Release.Name }}-secrets"
+            - name: REDIS_HOST
+              valueFrom:
+                configMapKeyRef:
+                  key: REDIS_HOST
+                  name: "{{ .Release.Name }}-config"
+            - name: REDIS_PORT
+              valueFrom:
+                configMapKeyRef:
+                  key: REDIS_PORT
+                  name: "{{ .Release.Name }}-config"
 ---
 apiVersion: autoscaling/v2beta1
 kind: HorizontalPodAutoscaler
