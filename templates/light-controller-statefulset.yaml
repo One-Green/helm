@@ -1,0 +1,69 @@
+{{ if eq .Values.lightController.enable "true" }}
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: "{{ .Release.Name }}-light-controller"
+spec:
+  selector:
+    matchLabels:
+      app: "{{ .Release.Name }}-light-controller"
+  serviceName: "{{ .Release.Name }}-light-controller"
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: "{{ .Release.Name }}-light-controller"
+    spec:
+      containers:
+        - name: light-controller
+          image: "{{ .Values.lightController.image }}"
+          command: [ '/bin/bash', '-c' ]
+          args: [ 'cd light && python node_controller.py' ]
+          imagePullPolicy: "{{ .Values.lightController.imagePullPolicy }}"
+          env:
+            - name: POSTGRES_HOST
+              valueFrom:
+                configMapKeyRef:
+                  key: POSTGRES_HOST
+                  name: "{{ .Release.Name }}-config"
+            - name: POSTGRES_PORT
+              valueFrom:
+                configMapKeyRef:
+                  key: POSTGRES_PORT
+                  name: "{{ .Release.Name }}-config"
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  key: POSTGRES_USER
+                  name: "{{ .Release.Name }}-secrets"
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: POSTGRES_PASSWORD
+                  name: "{{ .Release.Name }}-secrets"
+            - name: POSTGRES_DB
+              valueFrom:
+                configMapKeyRef:
+                  key: POSTGRES_DB
+                  name: "{{ .Release.Name }}-config"
+            - name: MQTT_HOST
+              valueFrom:
+                configMapKeyRef:
+                  key: MQTT_HOST
+                  name: "{{ .Release.Name }}-config"
+            - name: MQTT_PORT
+              valueFrom:
+                configMapKeyRef:
+                  key: MQTT_PORT
+                  name: "{{ .Release.Name }}-config"
+            - name: MQTT_USER
+              valueFrom:
+                secretKeyRef:
+                  key: MOSQUITTO_USERNAME
+                  name: "{{ .Release.Name }}-secrets"
+            - name: MQTT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: MOSQUITTO_PASSWORD
+                  name: "{{ .Release.Name }}-secrets"
+  {{ end }}
