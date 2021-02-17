@@ -45,7 +45,7 @@ spec:
 ---
   {{ if eq .Values.adminUI.ingress.enable "true"}}
   {{ if eq .Values.cloudProvider "microK8s"}}
-  {{/*Specific ingress to microk8s ingress*/}}
+{{/*Specific for microk8s ingress*/}}
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
@@ -63,7 +63,7 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: core-ui
+  name: "{{ .Release.Name }}-ui"
 spec:
   rules:
     - host: {{ .Values.adminUI.ingress.host }}
@@ -72,7 +72,9 @@ spec:
           - path: /
             pathType: Prefix
             backend:
-              serviceName: "{{ .Release.Name }}-ui"
-              servicePort: 8501
+              service:
+                name: "{{ .Release.Name }}-ui"
+                port:
+                  number: 8501
   {{ end }}
   {{ end }}
