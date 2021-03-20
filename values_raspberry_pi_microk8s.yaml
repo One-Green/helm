@@ -42,7 +42,7 @@ api:
 
 adminUI:
   enable: "true"
-  image: "docker.io/shanisma/k8s-one-green-admin-ui:latest"
+  image: "docker.io/shanisma/og-admin:latest"
   replicas: 1
   imagePullPolicy: "Always"
   ingress:
