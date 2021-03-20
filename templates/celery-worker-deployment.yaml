@@ -9,6 +9,8 @@ spec:
   replicas: {{ .Values.controllerWorker.replicas }}
   template:
     metadata:
+      annotations:
+        release.revision: "{{ .Release.Revision }}"
       labels:
         app: "{{ .Release.Name }}-worker"
     spec:

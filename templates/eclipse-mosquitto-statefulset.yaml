@@ -10,6 +10,8 @@ spec:
   replicas: 1
   template:
     metadata:
+      annotations:
+        release.revision: "{{ .Release.Revision }}"
       labels:
         app: "{{ .Release.Name}}-mqtt"
     spec:

@@ -12,6 +12,8 @@ spec:
     metadata:
       labels:
         app: "{{ .Release.Name }}-tsdb"
+      annotations:
+        release.revision: "{{ .Release.Revision }}"
     spec:
       containers:
         - name: timescaledb

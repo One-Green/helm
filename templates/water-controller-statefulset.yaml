@@ -13,6 +13,8 @@ spec:
     metadata:
       labels:
         app: "{{ .Release.Name }}-water-controller"
+      annotations:
+        release.revision: "{{ .Release.Revision }}"
     spec:
       containers:
         - name: water-controller

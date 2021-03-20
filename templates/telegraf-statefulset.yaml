@@ -12,6 +12,8 @@ spec:
     metadata:
       labels:
         app: "{{ .Release.Name }}-telegraf"
+      annotations:
+        release.revision: "{{ .Release.Revision }}"
     spec:
       containers:
         - name: telegraf
