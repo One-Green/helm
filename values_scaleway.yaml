@@ -44,22 +44,25 @@ api:
 
 adminUI:
   enable: "true"
-  image: "docker.io/shanisma/k8s-one-green-admin-ui:latest"
+  image: "docker.io/shanisma/og-admin:latest"
   replicas: 1
   imagePullPolicy: "Always"
   ingress:
-    enable: "true"
+    enable: "false"
     host: ""
 
-timeScaleDB:
-  image: "timescale/timescaledb:latest-pg11"
-  persistent:
-    enablePersistant: "true"
+postgresql:
+  global:
+    postgresql:
+      postgresqlUsername: "postgres"
+      postgresqlPassword: "anyrandompassword"
     storageClass: "scw-bssd"
-    volumeRequest: "1Gi"
-  secret:
-    user: "postgres"
-    password: "anyrandompassword"
+  replication:
+    readReplicas: 0
+  persistence:
+    size: "1Gi"
+  image:
+    pullPolicy: "IfNotPresent"
 
 influxDB:
   image: "influxdb:1.8.3"
@@ -96,15 +99,16 @@ grafana:
       - chart-example.local
 
 redis:
-  cluster:
+  auth:
     enabled: false
-    slaveCount: 0
-  usePassword: false
+    sentinel: false
   master:
     persistence:
       storageClass: "scw-bssd"
       size: "1Gi"
-  slave:
+  replica:
+    replicaCount: 0
     persistence:
+      enabled: false
       storageClass: "scw-bssd"
       size: "1Gi"

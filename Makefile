@@ -2,7 +2,7 @@ test:
 	helm install --debug --dry-run dry-test .
 
 test-deploy:
-	helm upgrade og-test -f values.yaml . --namespace helm-test --create-namespace --debug --install
+	helm upgrade test-deploy -f values.yaml . --namespace helm-test --create-namespace --debug --install
 
 
 clean-deploy-scaleway:
