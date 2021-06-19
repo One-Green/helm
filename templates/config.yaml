@@ -4,7 +4,7 @@ metadata:
   name: "{{ .Release.Name }}-config"
 data:
   # postgres configuration
-  POSTGRES_HOST: "{{ .Release.Name }}-tsdb"
+  POSTGRES_HOST: "{{ .Release.Name }}-postgresql-headless"
   POSTGRES_PORT: "5432"
   POSTGRES_DB: "one_green"
   # mqtt configuration
