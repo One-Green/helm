@@ -6,11 +6,11 @@ test-deploy:
 
 
 clean-deploy-scaleway:
-	helm uninstall og-test --namespace helm-test || echo "chart not installed"
+	helm uninstall og-test --namespace one-green || echo "chart not installed"
 	kubectl delete pvc og-test-grafana || echo "pvc already deleted"
 	kubectl delete pvc og-test-influxdb-data-og-test-influxdb-0 || echo "pvc already deleted"
-	kubectl delete pvc og-test-tsdb-data-og-test-tsdb-0 || echo "pvc already deleted"
+	kubectl delete pvc data-og-test-postgresql-0 || echo "pvc already deleted"
 	kubectl delete pvc redis-data-og-test-redis-master-0 || echo "pvc already deleted"
 
 test-deploy-scaleway: clean-deploy-scaleway values_scaleway.yaml
-	helm upgrade og-test -f values_scaleway.yaml . --namespace helm-test --create-namespace --debug --install
+	helm upgrade og-test -f values_scaleway.yaml . --namespace one-green --create-namespace --debug --install

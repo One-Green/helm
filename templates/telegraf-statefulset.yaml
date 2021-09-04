@@ -19,6 +19,27 @@ spec:
         - name: telegraf
           imagePullPolicy: IfNotPresent
           image: {{ .Values.telegraf.image }}
+          env:
+            - name: INFLUX_URL
+              valueFrom:
+                configMapKeyRef:
+                  key: "INFLUX_URL"
+                  name: "{{ .Release.Name }}-config"
+            - name: DOCKER_INFLUXDB_INIT_ADMIN_TOKEN
+              valueFrom:
+               secretKeyRef:
+                key: "DOCKER_INFLUXDB_INIT_ADMIN_TOKEN"
+                name: "{{ .Release.Name }}-secrets"
+            - name: DOCKER_INFLUXDB_INIT_ORG
+              valueFrom:
+               configMapKeyRef:
+                key: "DOCKER_INFLUXDB_INIT_ORG"
+                name: "{{ .Release.Name }}-config"
+            - name: DOCKER_INFLUXDB_INIT_BUCKET
+              valueFrom:
+               configMapKeyRef:
+                key: "DOCKER_INFLUXDB_INIT_BUCKET"
+                name: "{{ .Release.Name }}-config"
           volumeMounts:
             - name: conf
               mountPath: /etc/telegraf

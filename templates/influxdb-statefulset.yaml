@@ -20,26 +20,41 @@ spec:
         - name: influxdb
           image: "{{ .Values.influxDB.image }}"
           env:
-            - name: INFLUXDB_DB
+            - name: DOCKER_INFLUXDB_INIT_MODE
               valueFrom:
                 configMapKeyRef:
-                  key: "INFLUXDB_DB"
+                  key: "DOCKER_INFLUXDB_INIT_MODE"
                   name: "{{ .Release.Name }}-config"
-            - name: INFLUXDB_HTTP_AUTH_ENABLED
+            - name: DOCKER_INFLUXDB_INIT_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  key: "DOCKER_INFLUXDB_INIT_USERNAME"
+                  name: "{{ .Release.Name }}-secrets"
+            - name: DOCKER_INFLUXDB_INIT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: "DOCKER_INFLUXDB_INIT_PASSWORD"
+                  name: "{{ .Release.Name }}-secrets"
+            - name: DOCKER_INFLUXDB_INIT_ADMIN_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  key: "DOCKER_INFLUXDB_INIT_ADMIN_TOKEN"
+                  name: "{{ .Release.Name }}-secrets"
+            - name: DOCKER_INFLUXDB_INIT_ORG
               valueFrom:
                 configMapKeyRef:
-                  key: "INFLUXDB_HTTP_AUTH_ENABLED"
+                  key: DOCKER_INFLUXDB_INIT_ORG
                   name: "{{ .Release.Name }}-config"
-            - name: INFLUXDB_ADMIN_USER
+            - name: DOCKER_INFLUXDB_INIT_BUCKET
               valueFrom:
-                secretKeyRef:
-                  key: INFLUXDB_ADMIN_USER
-                  name: "{{ .Release.Name }}-secrets"
-            - name: INFLUXDB_ADMIN_PASSWORD
+                configMapKeyRef:
+                  key: DOCKER_INFLUXDB_INIT_BUCKET
+                  name: "{{ .Release.Name }}-config"
+            - name: DOCKER_INFLUXDB_INIT_RETENTION
               valueFrom:
-                secretKeyRef:
-                  key: INFLUXDB_ADMIN_PASSWORD
-                  name: "{{ .Release.Name }}-secrets"
+                configMapKeyRef:
+                  key: DOCKER_INFLUXDB_INIT_RETENTION
+                  name: "{{ .Release.Name }}-config"
           {{ if eq .Values.influxDB.persistent.enablePersistant "true"}}
           volumeMounts:
             - name: "{{ .Release.Name }}-influxdb-data"

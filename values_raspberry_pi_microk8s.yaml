@@ -63,17 +63,19 @@ postgresql:
     pullPolicy: "IfNotPresent"
 
 influxDB:
-  image: "influxdb:1.8.3"
+  image: "influxdb:2.0.8"
   persistent:
     enablePersistant: "true"
     storageClass: "microk8s-hostpath"
     volumeRequest: "1Gi"
+  dataRetention: "1w"
   secret:
     user: "admin"
     password: "anyrandompassword"
+    token: "change_this_token"
 
 telegraf:
-  image: "telegraf:1.16.0"
+  image: "telegraf:1.19.3"
 
 mqtt:
   image: "docker.io/shanisma/eclipse-mosquitto:1.6.12"
