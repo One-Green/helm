@@ -1,18 +1,18 @@
 apiVersion: v2
-name: One-Green master
-description: Kubernetes deployment
+name: one-green-core
+description: One-Green Core stack
 type: application
-version: 0.1.0
+version: 0.11.1
 appVersion: 0.0.1
 dependencies:
   - name: grafana
-    version: 6.13.1
+    version: 6.16.4
     repository: https://grafana.github.io/helm-charts
   - name: redis
-    version: 14.6.1
+    version: 15.3.2
     repository: https://charts.bitnami.com/bitnami
   - name: postgresql
-    version: 10.5.0
+    version: 10.9.5
     repository: https://charts.bitnami.com/bitnami
 maintainers:
   - name: Shanmugathas Vigneswaran (github @shanisma)
