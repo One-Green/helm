@@ -40,9 +40,18 @@ spec:
                configMapKeyRef:
                 key: "DOCKER_INFLUXDB_INIT_BUCKET"
                 name: "{{ .Release.Name }}-config"
+            - name: HEALTH_CHECK_TYPE
+              value: "mqtt,influxdb"
           volumeMounts:
             - name: conf
               mountPath: /etc/telegraf
+          livenessProbe:
+            initialDelaySeconds: 20
+            periodSeconds: 5
+            exec:
+              command:
+                - python
+                - /tools/health_check.py
       volumes:
         - name: conf
           configMap:

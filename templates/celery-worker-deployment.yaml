@@ -78,6 +78,15 @@ spec:
                 configMapKeyRef:
                   key: REDIS_PORT
                   name: "{{ .Release.Name }}-config"
+            - name: "HEALTH_CHECK_TYPE"
+              value: "redis,pg,mqtt"
+          livenessProbe:
+            initialDelaySeconds: 20
+            periodSeconds: 5
+            exec:
+              command:
+                - python
+                - health_check.py
 ---
 apiVersion: autoscaling/v2beta1
 kind: HorizontalPodAutoscaler
