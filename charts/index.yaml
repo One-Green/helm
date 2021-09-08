@@ -1,0 +1,13 @@
+apiVersion: v1
+entries:
+  ogc:
+    - apiVersion: v1
+      appVersion: "1.1"
+      created: "2021-07-12T11:47:46.171681432Z"
+      description: ogc-package-test
+      digest: e4f38927cf9498e88213a694376aff9ee56193356677d4bef7ce80caed66c76c
+      name: ogc
+      urls:
+        - ogc-0.1.zip
+      version: "0.1"
+generated: "2021-07-12T11:47:46.169209542Z"

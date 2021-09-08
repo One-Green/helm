@@ -1,28 +1,28 @@
-{{ if eq .Values.lightController.enable "true" }}
 apiVersion: apps/v1
-kind: StatefulSet
+kind: Deployment
 metadata:
-  name: "{{ .Release.Name }}-light-controller"
+  name: "{{ .Release.Name }}-worker"
 spec:
   selector:
     matchLabels:
-      app: "{{ .Release.Name }}-light-controller"
-  serviceName: "{{ .Release.Name }}-light-controller"
-  replicas: 1
+      app: "{{ .Release.Name }}-worker"
+  replicas: {{ .Values.controllerWorker.replicas }}
   template:
     metadata:
-      labels:
-        app: "{{ .Release.Name }}-light-controller"
       annotations:
         release.revision: "{{ .Release.Revision }}"
+      labels:
+        app: "{{ .Release.Name }}-worker"
     spec:
       containers:
-        - name: light-controller
-          image: "{{ .Values.lightController.image }}"
+        - name: worker
+          image: "{{ .Values.controllerWorker.image }}"
           command: [ '/bin/bash', '-c' ]
-          args: [ 'cd light && python node_controller.py' ]
-          imagePullPolicy: "{{ .Values.lightController.imagePullPolicy }}"
+          args: [ 'celery -A project worker -l {{ .Values.controllerWorker.log.level}}' ]
+          imagePullPolicy: "{{ .Values.controllerWorker.imagePullPolicy }}"
           env:
+            - name: C_FORCE_ROOT
+              value: "true"
             - name: POSTGRES_HOST
               valueFrom:
                 configMapKeyRef:
@@ -78,4 +78,29 @@ spec:
                 configMapKeyRef:
                   key: REDIS_PORT
                   name: "{{ .Release.Name }}-config"
-  {{ end }}
+            - name: "HEALTH_CHECK_TYPE"
+              value: "redis,pg,mqtt"
+          livenessProbe:
+            initialDelaySeconds: 20
+            periodSeconds: 5
+            exec:
+              command:
+                - python
+                - health_check.py
+---
+apiVersion: autoscaling/v2beta1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: "{{ .Release.Name }}-worker"
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: "{{ .Release.Name }}-worker"
+  minReplicas: {{ .Values.controllerWorker.HPA.minReplicas }}
+  maxReplicas: {{ .Values.controllerWorker.HPA.maxReplicas }}
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        targetAverageUtilization: {{ .Values.controllerWorker.HPA.cpu.targetAverageUtilization }}

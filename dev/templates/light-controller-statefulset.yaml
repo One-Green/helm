@@ -1,27 +1,27 @@
-{{ if eq .Values.waterController.enable "true" }}
+{{ if eq .Values.lightController.enable "true" }}
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: "{{ .Release.Name }}-water-controller"
+  name: "{{ .Release.Name }}-light-controller"
 spec:
   selector:
     matchLabels:
-      app: "{{ .Release.Name }}-water-controller"
-  serviceName: "water-controller"
+      app: "{{ .Release.Name }}-light-controller"
+  serviceName: "{{ .Release.Name }}-light-controller"
   replicas: 1
   template:
     metadata:
       labels:
-        app: "{{ .Release.Name }}-water-controller"
+        app: "{{ .Release.Name }}-light-controller"
       annotations:
         release.revision: "{{ .Release.Revision }}"
     spec:
       containers:
-        - name: water-controller
-          image: "{{ .Values.waterController.image }}"
+        - name: light-controller
+          image: "{{ .Values.lightController.image }}"
           command: [ '/bin/bash', '-c' ]
-          args: [ 'cd water && python node_controller.py' ]
-          imagePullPolicy: "{{ .Values.waterController.imagePullPolicy }}"
+          args: [ 'cd light && python node_controller.py' ]
+          imagePullPolicy: "{{ .Values.lightController.imagePullPolicy }}"
           env:
             - name: POSTGRES_HOST
               valueFrom:
@@ -78,4 +78,13 @@ spec:
                 configMapKeyRef:
                   key: REDIS_PORT
                   name: "{{ .Release.Name }}-config"
+            - name: "HEALTH_CHECK_TYPE"
+              value: "redis,pg,mqtt"
+          livenessProbe:
+            initialDelaySeconds: 20
+            periodSeconds: 5
+            exec:
+              command:
+                - python
+                - health_check.py
   {{ end }}
