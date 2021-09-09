@@ -1,8 +1,8 @@
 apiVersion: v2
 name: one-green-core
-description: One-Green Core stack
+description: One-Green Core deployment
 type: application
-version: 0.11.1
+version: 0.0.1
 appVersion: 0.0.1
 dependencies:
   - name: grafana

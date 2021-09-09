@@ -16,8 +16,8 @@ test-deploy-scaleway: clean-deploy-scaleway dev/values_scaleway.yaml
 	helm upgrade og-test -f values_scaleway.yaml . --namespace one-green --create-namespace --debug --install
 
 release-helm-chart: export CHART_NAME=one-green-core
-release-helm-chart: export CHART_VERSION=0.11.1
-release-helm-chart: export APP_VERSION=0.11.1
+release-helm-chart: export CHART_VERSION=0.0.1
+release-helm-chart: export APP_VERSION=0.0.1
 release-helm-chart:
 	yq eval -i '.name |= "${CHART_NAME}"' dev/Chart.yaml
 	yq eval -i '.version |= "${CHART_VERSION}"' dev/Chart.yaml
@@ -26,4 +26,5 @@ release-helm-chart:
 	# package + update sub-chart dependencies
 	helm package dev  --debug --dependency-update --destination charts
 	# update charts index.yaml
-	helm update index charts
+	helm repo index charts
+	git add charts/${CHART_NAME}-${CHART_VERSION}.tgz
