@@ -22,7 +22,8 @@ release-helm-chart:
 	yq eval -i '.name |= "${CHART_NAME}"' dev/Chart.yaml
 	yq eval -i '.version |= "${CHART_VERSION}"' dev/Chart.yaml
 	yq eval -i '.version |= "${APP_VERSION}"' dev/Chart.yaml
-	mkdir charts | true
+	mkdir charts || true
+	rm charts/${CHART_NAME}-${CHART_VERSION}.tgz || true
 	# package + update sub-chart dependencies
 	helm package dev  --debug --dependency-update --destination charts
 	# update charts index.yaml

@@ -3,7 +3,7 @@ entries:
   one-green-core:
   - apiVersion: v2
     appVersion: 0.0.1
-    created: "2021-09-09T23:21:30.321086+02:00"
+    created: "2021-09-09T23:26:46.814331+02:00"
     dependencies:
     - name: grafana
       repository: https://grafana.github.io/helm-charts
@@ -15,7 +15,7 @@ entries:
       repository: https://charts.bitnami.com/bitnami
       version: 10.9.5
     description: One-Green Core deployment
-    digest: 87108c4b2230c136862f16a40d978a1f7c82c425236b2a219cdc321c1e827567
+    digest: d0fcd9a57287878a07d12d2d68bd8dcdad14cee05cfc79f9a97913b50ae98d7d
     maintainers:
     - email: shanmugathas.vigneswaran@outlook.fr
       name: Shanmugathas Vigneswaran (github @shanisma)
@@ -25,4 +25,4 @@ entries:
     urls:
     - one-green-core-0.0.1.tgz
     version: 0.0.1
-generated: "2021-09-09T23:21:30.302683+02:00"
+generated: "2021-09-09T23:26:46.796885+02:00"
