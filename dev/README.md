@@ -31,14 +31,14 @@ You can then run `helm search repo one-green` to see the charts.
 
 ## Install
 ```console
-helm install one-green one-green-core/one-green-core --version 0.0.1
+helm install one-green one-green/one-green-core --version 0.0.1
 ```
 
 ## Install on Microk8s
 
 Microk8s use this [values_raspberry_pi_microk8s.yaml](https://github.com/One-Green/helm/blob/main/dev/values_raspberry_pi_microk8s.yaml)
 ```console
-helm install one-green one-green-core/one-green-core --version 0.0.1 --values values_raspberry_pi_microk8s.yaml
+helm install one-green one-green/one-green-core --version 0.0.1 --values values_raspberry_pi_microk8s.yaml
 ```
 
 
