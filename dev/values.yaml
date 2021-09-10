@@ -68,7 +68,7 @@ influxDB:
   image: "influxdb:2.0.8"
   persistent:
     enablePersistant: "true"
-    storageClass: "scw-bssd"
+    storageClass: "default"
     volumeRequest: "1Gi"
   dataRetention: "1w"
   secret:
@@ -106,11 +106,11 @@ redis:
     sentinel: false
   master:
     persistence:
-      storageClass: "scw-bssd"
+      storageClass: "default"
       size: "1Gi"
   replica:
     replicaCount: 0
     persistence:
       enabled: false
-      storageClass: "scw-bssd"
+      storageClass: "default"
       size: "1Gi"
