@@ -37,7 +37,7 @@ api:
   imagePullPolicy: "Always"
   replicas: 1
   log:
-    level: "debug"
+    level: "info"
   ingress:
     enable: "false"
     host: ""
