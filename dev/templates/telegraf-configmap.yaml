@@ -124,7 +124,7 @@ data:
     #   ##   example: servers = ["tcp://localhost:1883"]
     #   ##            servers = ["ssl://localhost:1883"]
     #   ##            servers = ["ws://localhost:1883"]
-       servers = ["tcp://{{ .Release.Name}}-mqtt:1883"]
+       servers = ["tcp://$MQTT_HOST:1883"]
     #
     #   ## Topics that will be subscribed to.
        topics = [
@@ -177,8 +177,8 @@ data:
     #   # client_id = ""
     #
     #   ## Username and password to connect MQTT server.
-       username = "{{ .Values.mqtt.secret.user }}"
-       password = "{{ .Values.mqtt.secret.password }}"
+       username = "$MOSQUITTO_USERNAME"
+       password = "$MOSQUITTO_PASSWORD"
     #
     #   ## Optional TLS Config
     #   # tls_ca = "/etc/telegraf/ca.pem"
@@ -201,7 +201,7 @@ data:
     #   ##            servers = ["ssl://localhost:1883"]
     #   ##            servers = ["ws://localhost:1883"]
        name_override = "controllers"
-       servers = ["tcp://{{ .Release.Name}}-mqtt:1883"]
+       servers = ["tcp://$MQTT_HOST:1883"]
 
     #
     #   ## Topics that will be subscribed to.
@@ -250,8 +250,8 @@ data:
     #   # client_id = ""
     #
     #   ## Username and password to connect MQTT server.
-       username = "{{ .Values.mqtt.secret.user }}"
-       password = "{{ .Values.mqtt.secret.password }}"
+       username = "$MOSQUITTO_USERNAME"
+       password = "$MOSQUITTO_PASSWORD"
     #
     #   ## Optional TLS Config
     #   # tls_ca = "/etc/telegraf/ca.pem"

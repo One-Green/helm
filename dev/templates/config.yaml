@@ -19,3 +19,5 @@ data:
   # REDIS (for Celery IoT async controller)
   REDIS_HOST: "{{ .Release.Name }}-redis-headless"
   REDIS_PORT: "6379"
+  # One-Green Api endpoint
+  ONE_GREEN_CORE_API: "http://{{ .Release.Name }}-api:8080"

@@ -26,7 +26,10 @@ spec:
           {{ end }}
           env:
             - name: ONE_GREEN_CORE_API
-              value: "http://{{ .Release.Name }}-api:8080"
+              valueFrom:
+                configMapKeyRef:
+                  key: ONE_GREEN_CORE_API
+                  name: "{{ .Release.Name }}-config"
           ports:
             - containerPort: 8501
       restartPolicy: Always

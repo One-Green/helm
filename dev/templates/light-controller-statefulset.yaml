@@ -22,62 +22,12 @@ spec:
           command: [ '/bin/bash', '-c' ]
           args: [ 'cd light && python node_controller.py' ]
           imagePullPolicy: "{{ .Values.lightController.imagePullPolicy }}"
+          envFrom:
+            - configMapRef:
+                name: "{{ .Release.Name }}-config"
+            - secretRef:
+                name:  "{{ .Release.Name }}-secrets"
           env:
-            - name: POSTGRES_HOST
-              valueFrom:
-                configMapKeyRef:
-                  key: POSTGRES_HOST
-                  name: "{{ .Release.Name }}-config"
-            - name: POSTGRES_PORT
-              valueFrom:
-                configMapKeyRef:
-                  key: POSTGRES_PORT
-                  name: "{{ .Release.Name }}-config"
-            - name: POSTGRES_USER
-              valueFrom:
-                secretKeyRef:
-                  key: POSTGRES_USER
-                  name: "{{ .Release.Name }}-secrets"
-            - name: POSTGRES_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  key: POSTGRES_PASSWORD
-                  name: "{{ .Release.Name }}-secrets"
-            - name: POSTGRES_DB
-              valueFrom:
-                configMapKeyRef:
-                  key: POSTGRES_DB
-                  name: "{{ .Release.Name }}-config"
-            - name: MQTT_HOST
-              valueFrom:
-                configMapKeyRef:
-                  key: MQTT_HOST
-                  name: "{{ .Release.Name }}-config"
-            - name: MQTT_PORT
-              valueFrom:
-                configMapKeyRef:
-                  key: MQTT_PORT
-                  name: "{{ .Release.Name }}-config"
-            - name: MQTT_USER
-              valueFrom:
-                secretKeyRef:
-                  key: MOSQUITTO_USERNAME
-                  name: "{{ .Release.Name }}-secrets"
-            - name: MQTT_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  key: MOSQUITTO_PASSWORD
-                  name: "{{ .Release.Name }}-secrets"
-            - name: REDIS_HOST
-              valueFrom:
-                configMapKeyRef:
-                  key: REDIS_HOST
-                  name: "{{ .Release.Name }}-config"
-            - name: REDIS_PORT
-              valueFrom:
-                configMapKeyRef:
-                  key: REDIS_PORT
-                  name: "{{ .Release.Name }}-config"
             - name: "HEALTH_CHECK_TYPE"
               value: "redis,pg,mqtt"
           livenessProbe:
@@ -87,4 +37,5 @@ spec:
               command:
                 - python
                 - health_check.py
+
   {{ end }}

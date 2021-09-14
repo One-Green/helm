@@ -19,39 +19,24 @@ spec:
         - name: telegraf
           imagePullPolicy: IfNotPresent
           image: {{ .Values.telegraf.image }}
+          envFrom:
+            - configMapRef:
+                name: "{{ .Release.Name }}-config"
+            - secretRef:
+                name:  "{{ .Release.Name }}-secrets"
           env:
-            - name: INFLUX_URL
-              valueFrom:
-                configMapKeyRef:
-                  key: "INFLUX_URL"
-                  name: "{{ .Release.Name }}-config"
-            - name: DOCKER_INFLUXDB_INIT_ADMIN_TOKEN
-              valueFrom:
-               secretKeyRef:
-                key: "DOCKER_INFLUXDB_INIT_ADMIN_TOKEN"
-                name: "{{ .Release.Name }}-secrets"
-            - name: DOCKER_INFLUXDB_INIT_ORG
-              valueFrom:
-               configMapKeyRef:
-                key: "DOCKER_INFLUXDB_INIT_ORG"
-                name: "{{ .Release.Name }}-config"
-            - name: DOCKER_INFLUXDB_INIT_BUCKET
-              valueFrom:
-               configMapKeyRef:
-                key: "DOCKER_INFLUXDB_INIT_BUCKET"
-                name: "{{ .Release.Name }}-config"
-            - name: HEALTH_CHECK_TYPE
+            - name: "HEALTH_CHECK_TYPE"
               value: "mqtt,influxdb"
-          volumeMounts:
-            - name: conf
-              mountPath: /etc/telegraf
           livenessProbe:
             initialDelaySeconds: 20
             periodSeconds: 5
             exec:
               command:
                 - python
-                - /tools/health_check.py
+                - health_check.py
+          volumeMounts:
+            - name: conf
+              mountPath: /etc/telegraf
       volumes:
         - name: conf
           configMap:
