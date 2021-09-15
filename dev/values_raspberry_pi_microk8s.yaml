@@ -75,7 +75,7 @@ influxDB:
     token: "change_this_token"
 
 telegraf:
-  image: "telegraf:1.19.3"
+  image: "docker.io/shanisma/telegraf:1.19.4"
 
 mqtt:
   image: "docker.io/shanisma/eclipse-mosquitto:1.6.12"
