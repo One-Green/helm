@@ -32,7 +32,7 @@ spec:
             periodSeconds: 5
             exec:
               command:
-                - python
+                - python3
                 - health_check.py
           volumeMounts:
             - name: conf
