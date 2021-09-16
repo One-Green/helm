@@ -78,6 +78,7 @@ influxDB:
 
 telegraf:
   image: "docker.io/shanisma/telegraf:1.19.4"
+  imagePullPolicy: "Always"
 
 mqtt:
   image: "docker.io/shanisma/eclipse-mosquitto:1.6.12"
