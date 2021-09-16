@@ -140,6 +140,7 @@ kubectl get secret one-green-grafana -o jsonpath='{.data.admin-password}' | base
 | sprinklerController.image | string | `"docker.io/shanisma/og-core:latest"` | iot sprinkler mqtt sensor topic consumer image |
 | sprinklerController.imagePullPolicy | string | `"Always"` | iot sprinkler mqtt sensor topic consumer image pull policy |
 | telegraf.image | string | `"telegraf:1.19.3"` | telegraf image (MQTT to Influxdb) |
+| telegraf.imagePullPolicy | string | `"Always"` | telegraf image pull policy |
 | waterController.enable | string | `"true"` | iot water mqtt sensor topic consumer activation |
 | waterController.image | string | `"docker.io/shanisma/og-core:latest"` | iot sprinkler mqtt sensor topic consumer image |
 | waterController.imagePullPolicy | string | `"Always"` | iot sprinkler mqtt sensor topic consumer image pull policy  |
