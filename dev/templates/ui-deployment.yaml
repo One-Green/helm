@@ -25,10 +25,10 @@ spec:
           args: [ "streamlit run ui.py" ]
           {{ end }}
           env:
-            - name: ONE_GREEN_CORE_API
+            - name: ONE_GREEN_API_URL
               valueFrom:
                 configMapKeyRef:
-                  key: ONE_GREEN_CORE_API
+                  key: ONE_GREEN_API_URL
                   name: "{{ .Release.Name }}-config"
           ports:
             - containerPort: 8501

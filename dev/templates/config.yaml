@@ -11,7 +11,9 @@ data:
   MQTT_HOST: "{{ .Release.Name}}-mqtt"
   MQTT_PORT: "1883"
   # influxdb configuration
-  INFLUX_URL: "http://{{ .Release.Name }}-influxdb:8086"
+  INFLUXDB_HOST: "{{ .Release.Name }}-influxdb"
+  INFLUXDB_PORT: "8086"
+  INFLUXDB_URL: "http://{{ .Release.Name }}-influxdb:8086"
   DOCKER_INFLUXDB_INIT_MODE: setup  # create user authorisation without using web-ui
   DOCKER_INFLUXDB_INIT_ORG: "{{ .Release.Name }}"
   DOCKER_INFLUXDB_INIT_BUCKET: "{{ .Release.Name }}-bucket"
@@ -20,4 +22,6 @@ data:
   REDIS_HOST: "{{ .Release.Name }}-redis-headless"
   REDIS_PORT: "6379"
   # One-Green Api endpoint
-  ONE_GREEN_CORE_API: "http://{{ .Release.Name }}-api:8080"
+  ONE_GREEN_API_HOST: "{{ .Release.Name }}-api"
+  ONE_GREEN_API_PORT: "8080"
+  ONE_GREEN_API_URL: "http://{{ .Release.Name }}-api:8080"
