@@ -177,8 +177,8 @@ data:
     #   # client_id = ""
     #
     #   ## Username and password to connect MQTT server.
-       username = "$MOSQUITTO_USERNAME"
-       password = "$MOSQUITTO_PASSWORD"
+       username = "$MQTT_USERNAME"
+       password = "$MQTT_PASSWORD"
     #
     #   ## Optional TLS Config
     #   # tls_ca = "/etc/telegraf/ca.pem"
@@ -250,8 +250,8 @@ data:
     #   # client_id = ""
     #
     #   ## Username and password to connect MQTT server.
-       username = "$MOSQUITTO_USERNAME"
-       password = "$MOSQUITTO_PASSWORD"
+       username = "$MQTT_USERNAME"
+       password = "$MQTT_PASSWORD"
     #
     #   ## Optional TLS Config
     #   # tls_ca = "/etc/telegraf/ca.pem"

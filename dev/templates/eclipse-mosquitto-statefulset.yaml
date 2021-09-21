@@ -23,12 +23,12 @@ spec:
             - name: MOSQUITTO_USERNAME
               valueFrom:
                 secretKeyRef:
-                  key: MOSQUITTO_USERNAME
+                  key: MQTT_USERNAME
                   name: "{{ .Release.Name }}-secrets"
             - name: MOSQUITTO_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  key: MOSQUITTO_PASSWORD
+                  key: MQTT_PASSWORD
                   name: "{{ .Release.Name }}-secrets"
           ports:
             - containerPort: 1883
