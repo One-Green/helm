@@ -1,3 +1,9 @@
+template: dev/values.yaml dev/values_raspberry_pi_microk8s.yaml dev/values_scaleway.yaml
+	mkdir rendering || true
+	helm template dev -f dev/values.yaml > rendering/values.yaml
+	helm template dev -f dev/values_raspberry_pi_microk8s.yaml > rendering/values_raspberry_pi_microk8s.yaml
+	helm template dev -f dev/values_scaleway.yaml > rendering/values_scaleway.yaml
+
 test:
 	helm install --debug --dry-run dry-test .
 
@@ -16,8 +22,8 @@ test-deploy-scaleway: clean-deploy-scaleway dev/values_scaleway.yaml
 	helm upgrade og-test -f values_scaleway.yaml . --namespace one-green --create-namespace --debug --install
 
 release-helm-chart: export CHART_NAME=one-green-core
-release-helm-chart: export CHART_VERSION=0.0.1
-release-helm-chart: export APP_VERSION=0.0.1
+release-helm-chart: export CHART_VERSION=0.0.2
+release-helm-chart: export APP_VERSION=0.0.2
 release-helm-chart:
 	yq eval -i '.name |= "${CHART_NAME}"' dev/Chart.yaml
 	yq eval -i '.version |= "${CHART_VERSION}"' dev/Chart.yaml
