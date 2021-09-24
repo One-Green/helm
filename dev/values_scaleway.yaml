@@ -74,7 +74,7 @@ influxDB:
   secret:
     user: "admin"
     password: "anyrandompassword"
-    token: "change_this_token"
+    token: &influxdb_secret_token "change_this_token"
 
 telegraf:
   image: "docker.io/shanisma/telegraf:1.19.4"
@@ -100,6 +100,21 @@ grafana:
     path: /
     hosts:
       - chart-example.local
+  datasources:
+    datasources.yaml:
+      apiVersion: 1
+      datasources:
+        - name: InfluxDB_v2_Flux
+          type: influxdb
+          access: proxy
+          url: "http://{{ .Release.Name }}-influxdb:8086"
+          secureJsonData:
+            token: *influxdb_secret_token
+          jsonData:
+            version: Flux
+            organization: "{{ .Release.Name }}"
+            defaultBucket: "{{ .Release.Name }}-bucket"
+            tlsSkipVerify: true
 
 redis:
   auth:
