@@ -3,7 +3,31 @@ entries:
   one-green-core:
   - apiVersion: v2
     appVersion: 0.0.1
-    created: "2021-09-21T22:35:57.901242+02:00"
+    created: "2021-09-24T20:32:40.399508+02:00"
+    dependencies:
+    - name: grafana
+      repository: https://grafana.github.io/helm-charts
+      version: 6.16.9
+    - name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: 15.3.2
+    - name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: 10.10.2
+    description: One-Green Core deployment
+    digest: 58a91c85315598de208d465dc5240ff03764e42fda7fb934415191a75a1eb20b
+    maintainers:
+    - email: shanmugathas.vigneswaran@outlook.fr
+      name: Shanmugathas Vigneswaran (github @shanisma)
+      url: https://one-green.io
+    name: one-green-core
+    type: application
+    urls:
+    - one-green-core-0.0.2.tgz
+    version: 0.0.2
+  - apiVersion: v2
+    appVersion: 0.0.1
+    created: "2021-09-24T20:32:40.386329+02:00"
     dependencies:
     - name: grafana
       repository: https://grafana.github.io/helm-charts
@@ -25,4 +49,4 @@ entries:
     urls:
     - one-green-core-0.0.1.tgz
     version: 0.0.1
-generated: "2021-09-21T22:35:57.887242+02:00"
+generated: "2021-09-24T20:32:40.369399+02:00"
