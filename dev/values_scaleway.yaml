@@ -35,7 +35,7 @@ controllerWorker:
 api:
   image: "docker.io/shanisma/og-core:latest"
   imagePullPolicy: "Always"
-  replicas: 1
+  replicas: 3
   log:
     level: "debug"
   ingress:
