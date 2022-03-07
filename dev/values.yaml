@@ -2,26 +2,32 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-cloudProvider: "others"
+ogGlobal:
+  microk8s:
+    enableCustomIngress: false
+  coreImage: &core_img docker.io/shanisma/og-core:0.0.4
+  mqttImage: &mqtt_img docker.io/shanisma/eclipse-mosquitto:1.6.12
+  telegrafImage: &telegraf_img telegraf:1.20.4
+  storageClasse: &storage_class_name scw-bssd
 
 sprinklerController:
   enable: "true"
-  image: "docker.io/shanisma/og-core:latest"
-  imagePullPolicy: "Always"
+  image: *core_img
+  imagePullPolicy: "IfNotPresent"
 
 waterController:
   enable: "true"
-  image: "docker.io/shanisma/og-core:latest"
-  imagePullPolicy: "Always"
+  image: *core_img
+  imagePullPolicy: "IfNotPresent"
 
 lightController:
   enable: "true"
-  image: "docker.io/shanisma/og-core:latest"
-  imagePullPolicy: "Always"
+  image: *core_img
+  imagePullPolicy: "IfNotPresent"
 
-controllerWorker:
-  image: "docker.io/shanisma/og-core:latest"
-  imagePullPolicy: "Always"
+celeryAsyncSharedWorker:
+  image: *core_img
+  imagePullPolicy: "IfNotPresent"
   log:
     level: "info"
   replicas: 1
@@ -33,22 +39,13 @@ controllerWorker:
       targetAverageUtilization: 10
 
 api:
-  image: "docker.io/shanisma/og-core:latest"
-  imagePullPolicy: "Always"
-  replicas: 1
+  image: *core_img
+  imagePullPolicy: "IfNotPresent"
+  replicas: 3
   log:
     level: "info"
   ingress:
-    enable: "false"
-    host: ""
-
-adminUI:
-  enable: "true"
-  image: "docker.io/shanisma/og-admin:latest"
-  replicas: 1
-  imagePullPolicy: "Always"
-  ingress:
-    enable: "true"
+    enable: false
     host: ""
 
 postgresql:
@@ -56,7 +53,7 @@ postgresql:
     postgresql:
       postgresqlUsername: "postgres"
       postgresqlPassword: "anyrandompassword"
-    storageClass: "default"
+    storageClass: *storage_class_name
   replication:
     readReplicas: 0
   persistence:
@@ -68,7 +65,7 @@ influxDB:
   image: "influxdb:2.0.8"
   persistent:
     enablePersistant: "true"
-    storageClass: "default"
+    storageClass: *storage_class_name
     volumeRequest: "1Gi"
   dataRetention: "1w"
   secret:
@@ -76,23 +73,24 @@ influxDB:
     password: "anyrandompassword"
     token: &influxdb_secret_token "change_this_token"
 
-telegraf:
-  image: "docker.io/shanisma/telegraf:1.19.4"
-  imagePullPolicy: "Always"
-
 mqtt:
-  image: "docker.io/shanisma/eclipse-mosquitto:1.6.12"
+  image: *mqtt_img
+  imagePullPolicy: IfNotPresent
   NodePort: 30181
   secret:
-    user: "mqtt"
-    password: "anyrandompassword"
+    user: mqtt
+    password: anyrandompassword
+
+telegraf:
+  imagePullPolicy: IfNotPresent
+  image: *telegraf_img
 
 grafana:
   persistence:
     enabled: true
     type: "pvc"
     size: "1Gi"
-    storageClassName: "default"
+    storageClassName: *storage_class_name
   ingress:
     enabled: false
     annotations: { }
@@ -122,11 +120,11 @@ redis:
     sentinel: false
   master:
     persistence:
-      storageClass: "default"
+      storageClass: *storage_class_name
       size: "1Gi"
   replica:
     replicaCount: 0
     persistence:
       enabled: false
-      storageClass: "default"
+      storageClass: *storage_class_name
       size: "1Gi"

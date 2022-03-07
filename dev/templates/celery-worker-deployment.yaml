@@ -6,7 +6,7 @@ spec:
   selector:
     matchLabels:
       app: "{{ .Release.Name }}-worker"
-  replicas: {{ .Values.controllerWorker.replicas }}
+  replicas: {{ .Values.celeryAsyncSharedWorker.replicas }}
   template:
     metadata:
       annotations:
@@ -16,10 +16,11 @@ spec:
     spec:
       containers:
         - name: worker
-          image: "{{ .Values.controllerWorker.image }}"
-          command: [ '/bin/bash', '-c' ]
-          args: [ 'celery -A project worker -l {{ .Values.controllerWorker.log.level}}' ]
-          imagePullPolicy: "{{ .Values.controllerWorker.imagePullPolicy }}"
+          image: "{{ .Values.celeryAsyncSharedWorker.image }}"
+          command: [ '/bin/sh', '-c' ]
+          args:
+            - celery -A project worker -l {{ .Values.celeryAsyncSharedWorker.log.level}}'
+          imagePullPolicy: "{{ .Values.celeryAsyncSharedWorker.imagePullPolicy }}"
           envFrom:
           - configMapRef:
               name: "{{ .Release.Name }}-config"
@@ -47,10 +48,10 @@ spec:
     apiVersion: apps/v1
     kind: Deployment
     name: "{{ .Release.Name }}-worker"
-  minReplicas: {{ .Values.controllerWorker.HPA.minReplicas }}
-  maxReplicas: {{ .Values.controllerWorker.HPA.maxReplicas }}
+  minReplicas: {{ .Values.celeryAsyncSharedWorker.HPA.minReplicas }}
+  maxReplicas: {{ .Values.celeryAsyncSharedWorker.HPA.maxReplicas }}
   metrics:
     - type: Resource
       resource:
         name: cpu
-        targetAverageUtilization: {{ .Values.controllerWorker.HPA.cpu.targetAverageUtilization }}
+        targetAverageUtilization: {{ .Values.celeryAsyncSharedWorker.HPA.cpu.targetAverageUtilization }}

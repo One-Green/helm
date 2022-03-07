@@ -1,17 +1,17 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: "{{ .Release.Name }}-telegraf"
+  name: {{ .Release.Name }}-telegraf
 spec:
   selector:
     matchLabels:
-      app: "{{ .Release.Name }}-telegraf"
-  serviceName: "{{ .Release.Name }}-telegraf"
+      app: {{ .Release.Name }}-telegraf
+  serviceName: {{ .Release.Name }}-telegraf
   replicas: 1
   template:
     metadata:
       labels:
-        app: "{{ .Release.Name }}-telegraf"
+        app: {{ .Release.Name }}-telegraf
       annotations:
         release.revision: "{{ .Release.Revision }}"
     spec:
@@ -21,23 +21,13 @@ spec:
           image: {{ .Values.telegraf.image }}
           envFrom:
             - configMapRef:
-                name: "{{ .Release.Name }}-config"
+                name: {{ .Release.Name }}-config
             - secretRef:
-                name:  "{{ .Release.Name }}-secrets"
-          env:
-            - name: "HEALTH_CHECK_TYPE"
-              value: "mqtt,influxdb"
-          livenessProbe:
-            initialDelaySeconds: 20
-            periodSeconds: 5
-            exec:
-              command:
-                - python3
-                - health_check.py
+                name: {{ .Release.Name }}-secrets
           volumeMounts:
             - name: conf
               mountPath: /etc/telegraf
       volumes:
         - name: conf
           configMap:
-            name: "{{ .Release.Name}}-telegraf-config"
+            name: {{ .Release.Name}}-telegraf-config

@@ -19,7 +19,7 @@ spec:
       containers:
         - name: light-controller
           image: "{{ .Values.lightController.image }}"
-          command: [ '/bin/bash', '-c' ]
+          command: [ '/bin/sh', '-c' ]
           args: [ 'cd light && python node_controller.py' ]
           imagePullPolicy: "{{ .Values.lightController.imagePullPolicy }}"
           envFrom:
