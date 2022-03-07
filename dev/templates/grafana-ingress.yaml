@@ -1,5 +1,5 @@
 {{/*Specific patch for microk8s ingress*/}}
-{{ if eq .Values.cloudProvider "microK8s"}}
+{{ if eq .Values.ogGlobal.microk8s.enableCustomIngress true }}
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:

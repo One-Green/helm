@@ -1,45 +1,45 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: "{{ .Release.Name}}-mqtt"
+  name: {{ .Release.Name}}-mqtt
 spec:
   selector:
     matchLabels:
-      app: "{{ .Release.Name}}-mqtt"
-  serviceName: "{{ .Release.Name}}-mqtt"
+      app: {{ .Release.Name}}-mqtt
+  serviceName: {{ .Release.Name}}-mqtt
   replicas: 1
   template:
     metadata:
       annotations:
-        release.revision: "{{ .Release.Revision }}"
+        release.revision: {{ .Release.Revision }}
       labels:
         app: "{{ .Release.Name}}-mqtt"
     spec:
       containers:
         - name: mqtt
-          image: "{{ .Values.mqtt.image }}"
-          imagePullPolicy: IfNotPresent
+          image: {{ .Values.mqtt.image }}
+          imagePullPolicy: {{ .Values.mqtt.imagePullPolicy }}
           env:
             - name: MOSQUITTO_USERNAME
               valueFrom:
                 secretKeyRef:
                   key: MQTT_USERNAME
-                  name: "{{ .Release.Name }}-secrets"
+                  name: {{ .Release.Name }}-secrets
             - name: MOSQUITTO_PASSWORD
               valueFrom:
                 secretKeyRef:
                   key: MQTT_PASSWORD
-                  name: "{{ .Release.Name }}-secrets"
+                  name: {{ .Release.Name }}-secrets
           ports:
             - containerPort: 1883
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: "{{ .Release.Name}}-mqtt"
+  name: {{ .Release.Name}}-mqtt
 spec:
   selector:
-    app: "{{ .Release.Name}}-mqtt"
+    app: {{ .Release.Name}}-mqtt
   type: NodePort
   ports:
     - port: 1883

@@ -1,13 +1,12 @@
-template: dev/values.yaml dev/values_raspberry_pi_microk8s.yaml dev/values_scaleway.yaml
+template: dev/values.yaml
 	mkdir rendering || true
 	helm template dev -f dev/values.yaml > rendering/values.yaml
-	helm template dev -f dev/values_raspberry_pi_microk8s.yaml > rendering/values_raspberry_pi_microk8s.yaml
-	helm template dev -f dev/values_scaleway.yaml > rendering/values_scaleway.yaml
 
 test:
 	helm install --debug --dry-run dry-test .
 
 test-deploy:
+	helm depedencies update
 	helm upgrade test-deploy -f values.yaml . --namespace helm-test --create-namespace --debug --install
 
 

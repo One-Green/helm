@@ -19,8 +19,9 @@ spec:
       containers:
         - name: water-controller
           image: "{{ .Values.waterController.image }}"
-          command: [ '/bin/bash', '-c' ]
-          args: [ 'cd water && python node_controller.py' ]
+          command: [ '/bin/sh', '-c' ]
+          args:
+            - python manage.py water_controller
           imagePullPolicy: "{{ .Values.waterController.imagePullPolicy }}"
           envFrom:
             - configMapRef:
