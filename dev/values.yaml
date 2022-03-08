@@ -48,8 +48,8 @@ api:
   log:
     level: "info"
   ingress:
-    enable: true
-    useCertmanager: true
+    enable: false
+    useCertmanager: false
     issuername: letsencrypt-prod
     host: "api.dev1.og-ingest1.com"
 
