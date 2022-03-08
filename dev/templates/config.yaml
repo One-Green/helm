@@ -27,4 +27,4 @@ data:
   ONE_GREEN_API_HOST: "{{ .Release.Name }}-api"
   ONE_GREEN_API_PORT: "8080"
   ONE_GREEN_API_URL: "http://{{ .Release.Name }}-api:8080"
-  CSRF_TRUSTED_ORIGINS: "{{ .Values.api.ingress.host }}"
+  CSRF_TRUSTED_ORIGINS: "https://{{ .Values.api.ingress.host }}"
