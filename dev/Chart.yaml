@@ -6,13 +6,13 @@ version: 0.0.4
 appVersion: 0.0.1
 dependencies:
   - name: grafana
-    version: 6.18.1
+    version: 6.24.0
     repository: https://grafana.github.io/helm-charts
   - name: redis
-    version: 15.6.3
+    version: 16.5.0
     repository: https://charts.bitnami.com/bitnami
   - name: postgresql
-    version: 10.13.11
+    version: 11.1.4
     repository: https://charts.bitnami.com/bitnami
 maintainers:
   - name: Shanmugathas Vigneswaran (github @shanisma)

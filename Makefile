@@ -3,11 +3,11 @@ template: dev/values.yaml
 	helm template dev -f dev/values.yaml > rendering/values.yaml
 
 test:
-	helm install --debug --dry-run dry-test .
+	helm install --debug --dry-run dry-test dev
 
 test-deploy:
-	helm depedencies update
-	helm upgrade test-deploy -f values.yaml . --namespace helm-test --create-namespace --debug --install
+	helm dependencies update dev
+	helm upgrade test-deploy -f dev/values.yaml dev --namespace helm-test --create-namespace --debug --install
 
 
 clean-deploy-scaleway:

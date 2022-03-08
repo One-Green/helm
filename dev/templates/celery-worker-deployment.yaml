@@ -19,7 +19,9 @@ spec:
           image: "{{ .Values.celeryAsyncSharedWorker.image }}"
           command: [ '/bin/sh', '-c' ]
           args:
-            - celery -A project worker -l {{ .Values.celeryAsyncSharedWorker.log.level}}'
+            - >
+              python -m celery -A project worker
+              -l {{ .Values.celeryAsyncSharedWorker.log.level}}
           imagePullPolicy: "{{ .Values.celeryAsyncSharedWorker.imagePullPolicy }}"
           envFrom:
           - configMapRef:
