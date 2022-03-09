@@ -3,7 +3,7 @@ entries:
   one-green-core:
   - apiVersion: v2
     appVersion: 0.0.4
-    created: "2022-03-09T17:01:47.540391371+01:00"
+    created: "2022-03-09T19:48:00.108899311+01:00"
     dependencies:
     - name: grafana
       repository: https://grafana.github.io/helm-charts
@@ -15,7 +15,7 @@ entries:
       repository: https://charts.bitnami.com/bitnami
       version: 11.1.4
     description: One-Green Core deployment
-    digest: 0cd979b9a9cc2aa8ef90519f7bf50d0f79362fc912a9a82fc9f3767ae692bcf5
+    digest: a464b04a4f365560033ef617b8a1e76d016462652fd3ca8d791d00d68fef73d7
     maintainers:
     - email: shanmugathas.vigneswaran@outlook.fr
       name: Shanmugathas Vigneswaran (github @shanisma)
@@ -27,7 +27,7 @@ entries:
     version: 0.0.5
   - apiVersion: v2
     appVersion: 0.0.1
-    created: "2022-03-09T17:01:47.528484724+01:00"
+    created: "2022-03-09T19:48:00.092015224+01:00"
     dependencies:
     - name: grafana
       repository: https://grafana.github.io/helm-charts
@@ -51,7 +51,7 @@ entries:
     version: 0.0.4
   - apiVersion: v2
     appVersion: 0.0.1
-    created: "2022-03-09T17:01:47.516706889+01:00"
+    created: "2022-03-09T19:48:00.080334658+01:00"
     dependencies:
     - name: grafana
       repository: https://grafana.github.io/helm-charts
@@ -75,7 +75,7 @@ entries:
     version: 0.0.3
   - apiVersion: v2
     appVersion: 0.0.1
-    created: "2022-03-09T17:01:47.505172934+01:00"
+    created: "2022-03-09T19:48:00.068935993+01:00"
     dependencies:
     - name: grafana
       repository: https://grafana.github.io/helm-charts
@@ -99,7 +99,7 @@ entries:
     version: 0.0.2
   - apiVersion: v2
     appVersion: 0.0.1
-    created: "2022-03-09T17:01:47.493191688+01:00"
+    created: "2022-03-09T19:48:00.05763412+01:00"
     dependencies:
     - name: grafana
       repository: https://grafana.github.io/helm-charts
@@ -121,4 +121,4 @@ entries:
     urls:
     - one-green-core-0.0.1.tgz
     version: 0.0.1
-generated: "2022-03-09T17:01:47.481844446+01:00"
+generated: "2022-03-09T19:48:00.046203252+01:00"
