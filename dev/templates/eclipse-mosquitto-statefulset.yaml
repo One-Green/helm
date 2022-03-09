@@ -5,13 +5,13 @@ metadata:
 spec:
   selector:
     matchLabels:
-      app: {{ .Release.Name}}-mqtt
-  serviceName: {{ .Release.Name}}-mqtt
+      app: "{{ .Release.Name}}-mqtt"
+  serviceName: "{{ .Release.Name}}-mqtt"
   replicas: 1
   template:
     metadata:
       annotations:
-        release.revision: {{ .Release.Revision }}
+        release.revision: "{{ .Release.Revision }}"
       labels:
         app: "{{ .Release.Name}}-mqtt"
     spec:
@@ -39,7 +39,7 @@ metadata:
   name: {{ .Release.Name}}-mqtt
 spec:
   selector:
-    app: {{ .Release.Name}}-mqtt
+    app: "{{ .Release.Name}}-mqtt"
   type: NodePort
   ports:
     - port: 1883

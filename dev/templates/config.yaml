@@ -3,8 +3,10 @@ kind: ConfigMap
 metadata:
   name: "{{ .Release.Name }}-config"
 data:
+  # Set timezone UTC by default
+  TZ: UTC
   # postgres configuration
-  POSTGRES_HOST: "{{ .Release.Name }}-postgresql-headless"
+  POSTGRES_HOST: "{{ .Release.Name }}-postgresql"
   POSTGRES_PORT: "5432"
   POSTGRES_DB: "one_green"
   # mqtt configuration
@@ -21,7 +23,8 @@ data:
   # REDIS (for Celery IoT async controller)
   REDIS_HOST: "{{ .Release.Name }}-redis-headless"
   REDIS_PORT: "6379"
-  # One-Green Api endpoint
+  # Django config
   ONE_GREEN_API_HOST: "{{ .Release.Name }}-api"
   ONE_GREEN_API_PORT: "8080"
   ONE_GREEN_API_URL: "http://{{ .Release.Name }}-api:8080"
+  CSRF_TRUSTED_ORIGINS: "https://{{ .Values.api.ingress.host }}"

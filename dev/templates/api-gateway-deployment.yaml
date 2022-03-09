@@ -17,7 +17,7 @@ spec:
       initContainers:
         - name: initdb
           image: "{{ .Values.api.image }}"
-          command: [ '/bin/bash', '-c' ]
+          command: [ '/bin/sh', '-c' ]
           args: [ "python init.py" ]
           imagePullPolicy: "{{ .Values.api.imagePullPolicy }}"
           envFrom:
@@ -31,6 +31,7 @@ spec:
           command: [ '/bin/sh', '-c' ]
           args:
             - >
+              python -m
               gunicorn
               --workers=1
               --bind=0.0.0.0:8080
@@ -74,6 +75,12 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: "{{ .Release.Name }}-api"
+  annotations:
+    {{ if eq .Values.api.ingress.useCertmanager true }}
+    cert-manager.io/cluster-issuer: {{ .Values.api.ingress.issuername }}
+    {{ else }}
+    {}
+    {{ end }}
 spec:
   rules:
     - host: "{{ .Values.api.ingress.host }}"
@@ -86,4 +93,8 @@ spec:
                 name: "{{ .Release.Name }}-api"
                 port:
                   number: 8080
+  tls:
+    - hosts:
+        - "{{ .Values.api.ingress.host }}"
+      secretName: "{{ .Release.Name }}-api-tls"
   {{ end }}
