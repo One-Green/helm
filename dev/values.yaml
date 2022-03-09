@@ -44,6 +44,7 @@ api:
   django:
     adminUsername: "admin"
     adminPassword: "admin"
+    debug: false
   replicas: 1
   log:
     level: "info"

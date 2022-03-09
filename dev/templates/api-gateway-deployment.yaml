@@ -54,6 +54,7 @@ spec:
           livenessProbe:
             initialDelaySeconds: 20
             periodSeconds: 10
+            timeoutSeconds: 7
             exec:
               command:
                 - python
