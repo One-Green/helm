@@ -49,8 +49,8 @@ api:
   log:
     level: "info"
   ingress:
-    enable: false
-    useCertmanager: false
+    enable: true
+    useCertmanager: true
     issuername: letsencrypt-prod
     host: "api.dev1.og-ingest1.com"
 
@@ -100,11 +100,18 @@ grafana:
     storageClassName: *storage_class_name
   ingress:
     enabled: false
-    annotations: { }
-    labels: { }
-    path: /
-    hosts:
-      - chart-example.local
+#    annotations:
+#      cert-manager.io/cluster-issuer: letsencrypt-prod
+#    labels:
+#      {}
+#    path: /
+#    hosts:
+#      - "grafana.dev1.og-ingest1.com"
+#    tls:
+#      - secretName: grafana-tls
+#        hosts:
+#          - "grafana.dev1.og-ingest1.com"
+
   datasources:
     datasources.yaml:
       apiVersion: 1
