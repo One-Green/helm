@@ -24,7 +24,11 @@ data:
   REDIS_HOST: "{{ .Release.Name }}-redis-headless"
   REDIS_PORT: "6379"
   # Django config
+  # internal service
   ONE_GREEN_API_HOST: "{{ .Release.Name }}-api"
   ONE_GREEN_API_PORT: "8080"
   ONE_GREEN_API_URL: "http://{{ .Release.Name }}-api:8080"
+  # django settings.py
   CSRF_TRUSTED_ORIGINS: "https://{{ .Values.api.ingress.host }}"
+  ALLOWED_HOSTS: {{ .Values.api.ingress.host | quote }}
+  DEBUG: {{ .Values.api.django.debug | quote | lower }}
