@@ -7,7 +7,7 @@ test:
 
 test-deploy:
 	helm dependencies update dev
-	helm upgrade test-deploy -f dev/values.yaml dev --namespace helm-test --create-namespace --debug --install
+	helm upgrade og-test -f dev/values.yaml dev --namespace helm-test --create-namespace --debug --install
 
 
 clean-deploy-scaleway:
@@ -16,9 +16,6 @@ clean-deploy-scaleway:
 	kubectl delete pvc og-test-influxdb-data-og-test-influxdb-0 || echo "pvc already deleted"
 	kubectl delete pvc data-og-test-postgresql-0 || echo "pvc already deleted"
 	kubectl delete pvc redis-data-og-test-redis-master-0 || echo "pvc already deleted"
-
-test-deploy-scaleway: clean-deploy-scaleway dev/values_scaleway.yaml
-	helm upgrade og-test -f values_scaleway.yaml . --namespace one-green --create-namespace --debug --install
 
 
 release:

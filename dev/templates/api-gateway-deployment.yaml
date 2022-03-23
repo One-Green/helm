@@ -31,7 +31,7 @@ spec:
           command: [ '/bin/sh', '-c' ]
           args:
             - >
-              python manage.py collectstatic
+              python manage.py collectstatic --noinput
               &&
               python -m
               gunicorn
