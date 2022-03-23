@@ -1,0 +1,46 @@
+# https://taskfile.dev
+
+version: '3'
+
+tasks:
+
+  default:
+    desc: print task list
+    cmds:
+      - task --list-all
+
+  template:
+    desc: generate k8s ressources
+    cmds:
+      - mkdir rendering || true
+      - helm template dev -f dev/values.yaml > rendering/values.yaml
+
+  dr:
+    desc: dry run
+    cmds:
+      - helm install --debug --dry-run dry-test dev
+
+  d:
+    desc: update dependencies package
+    cmds:
+      - helm dependencies update dev
+  r:
+    desc: uninstall
+    cmds:
+      - helm uninstall test-deploy --namespace helm-test
+
+  i:
+    desc: install
+    cmds:
+      - helm install test-deploy -f dev/values.yaml dev --namespace helm-test --create-namespace --debug
+
+  if:
+    desc: install force (uninstall before)
+    cmds:
+      - task r
+      - task i
+
+  up:
+    desc: helm upgarde or install
+    cmds:
+      - helm upgrade test-deploy -f dev/values.yaml dev --namespace helm-test --create-namespace --debug --install

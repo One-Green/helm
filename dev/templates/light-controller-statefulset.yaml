@@ -20,7 +20,8 @@ spec:
         - name: light-controller
           image: "{{ .Values.lightController.image }}"
           command: [ '/bin/sh', '-c' ]
-          args: [ 'python manage.py light_controller' ]
+          args:
+            - python manage.py light_controller
           imagePullPolicy: "{{ .Values.lightController.imagePullPolicy }}"
           envFrom:
             - configMapRef:
