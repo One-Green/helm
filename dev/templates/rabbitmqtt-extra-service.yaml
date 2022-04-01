@@ -6,13 +6,13 @@ spec:
   selector:
     app.kubernetes.io/instance: {{ .Release.Name}}
     app.kubernetes.io/name: rabbitmq
-  {{ if eq .Values.rabbitmqtNodePort.enable }}
+  {{ if eq .Values.rabbitmqtNodePort.enable true }}
   type: NodePort
   {{ else }}
   type: ClusterIP
   {{ end }}
   ports:
     - port: 1883
-      {{ if eq .Values.rabbitmqtNodePort.enable }}
+      {{ if eq .Values.rabbitmqtNodePort.enable true }}
       nodePort: {{ .Values.rabbitmqtNodePort.NodePort }}
       {{ end }}

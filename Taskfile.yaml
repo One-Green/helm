@@ -43,4 +43,20 @@ tasks:
   up:
     desc: helm upgarde or install
     cmds:
-      - helm upgrade test-deploy -f dev/values.yaml dev --namespace helm-test --create-namespace --debug --install
+      - helm upgrade og-test -f dev/values.yaml dev --namespace helm-test --create-namespace --debug --install
+
+  p:
+    desc: package helm chart
+    cmds:
+      - helm package dev  --debug --dependency-update --destination charts
+
+  upi:
+    desc: update local index.yaml
+    cmds:
+      - helm repo index charts
+
+  release:
+    desc: release helm chart
+    cmds:
+      - task p
+      - task upi

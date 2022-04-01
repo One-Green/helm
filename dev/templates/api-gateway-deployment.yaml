@@ -57,8 +57,8 @@ spec:
               name: api
           livenessProbe:
             initialDelaySeconds: 20
-            periodSeconds: 10
-            timeoutSeconds: 7
+            periodSeconds: 15
+            timeoutSeconds: 10
             exec:
               command:
                 - python

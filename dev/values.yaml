@@ -84,7 +84,7 @@ rabbitmq:
   extraPlugins: rabbitmq_mqtt
   persistence:
     enabled: true
-    storageClass: scw-bssd
+    storageClass: *storage_class_name
     size: 1Gi
   auth:
     username: mqtt

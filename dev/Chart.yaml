@@ -2,20 +2,20 @@ apiVersion: v2
 name: one-green-core
 description: One-Green Core deployment
 type: application
-version: 0.0.5
-appVersion: 0.0.4
+version: 0.0.6
+appVersion: 0.0.7
 dependencies:
   - name: grafana
-    version: 6.24.0
+    version: 6.24.1
     repository: https://grafana.github.io/helm-charts
   - name: redis
-    version: 16.5.0
+    version: 16.8.0
     repository: https://charts.bitnami.com/bitnami
   - name: postgresql
-    version: 11.1.4
+    version: 11.1.13
     repository: https://charts.bitnami.com/bitnami
   - name: rabbitmq
-    version: 8.30.4
+    version: 8.31.0
     repository: https://charts.bitnami.com/bitnami
 maintainers:
   - name: Shanmugathas Vigneswaran (github @shanisma)
