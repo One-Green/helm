@@ -12,13 +12,16 @@ spec:
     metadata:
       labels:
         app: {{ .Release.Name }}-telegraf
-      annotations:
-        release.revision: "{{ .Release.Revision }}"
     spec:
       containers:
         - name: telegraf
           imagePullPolicy: {{ .Values.telegraf.imagePullPolicy }}
           image: {{ .Values.telegraf.image }}
+          env:
+            - name: MQTT_USERNAME
+              value: {{ .Values.rabbitmq.auth.username }}
+            - name: MQTT_PASSWORD
+              value: {{ .Values.rabbitmq.auth.password }}
           envFrom:
             - configMapRef:
                 name: {{ .Release.Name }}-config

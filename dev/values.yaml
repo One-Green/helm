@@ -5,8 +5,7 @@
 ogGlobal:
   microk8s:
     enableCustomIngress: false
-  coreImage: &core_img docker.io/shanisma/og-core:0.0.5
-  mqttImage: &mqtt_img docker.io/shanisma/paho-mqtt:2.0.14
+  coreImage: &core_img docker.io/shanisma/og-core:0.0.7
   telegrafImage: &telegraf_img telegraf:1.20.4
   storageClasse: &storage_class_name scw-bssd
 
@@ -30,13 +29,13 @@ celeryAsyncSharedWorker:
   imagePullPolicy: "IfNotPresent"
   log:
     level: "info"
-  replicas: 1
+  replicas: 3
   HPA:
     enable: "true"
     minReplicas: 1
-    maxReplicas: 2
+    maxReplicas: 5
     cpu:
-      targetAverageUtilization: 10
+      targetAverageUtilization: 30
 
 api:
   image: *core_img
@@ -80,13 +79,24 @@ influxDB:
     password: "anyrandompassword"
     token: &influxdb_secret_token "change_this_token"
 
-mqtt:
-  image: *mqtt_img
-  imagePullPolicy: IfNotPresent
-  NodePort: 30182
-  secret:
-    user: mqtt
+rabbitmq:
+  replicaCount: 3
+  extraPlugins: rabbitmq_mqtt
+  persistence:
+    enabled: true
+    storageClass: scw-bssd
+    size: 1Gi
+  auth:
+    username: mqtt
     password: anyrandompassword
+    erlangCookie: secretcookie
+  extraContainerPorts:
+    - name: mqtt
+      containerPort: 1883
+
+rabbitmqtNodePort:
+  enable: true
+  NodePort: 30182
 
 telegraf:
   imagePullPolicy: IfNotPresent

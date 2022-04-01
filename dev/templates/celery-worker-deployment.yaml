@@ -9,8 +9,6 @@ spec:
   replicas: {{ .Values.celeryAsyncSharedWorker.replicas }}
   template:
     metadata:
-      annotations:
-        release.revision: "{{ .Release.Revision }}"
       labels:
         app: "{{ .Release.Name }}-worker"
     spec:
@@ -29,13 +27,17 @@ spec:
           - secretRef:
               name:  "{{ .Release.Name }}-secrets"
           env:
+            - name: MQTT_USERNAME
+              value: {{ .Values.rabbitmq.auth.username }}
+            - name: MQTT_PASSWORD
+              value: {{ .Values.rabbitmq.auth.password }}
             - name: C_FORCE_ROOT
               value: "true"
             - name: "HEALTH_CHECK_TYPE"
               value: "redis,pg,mqtt"
           livenessProbe:
             initialDelaySeconds: 20
-            periodSeconds: 5
+            periodSeconds: 10
             exec:
               command:
                 - python

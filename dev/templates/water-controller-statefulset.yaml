@@ -13,8 +13,6 @@ spec:
     metadata:
       labels:
         app: "{{ .Release.Name }}-water-controller"
-      annotations:
-        release.revision: "{{ .Release.Revision }}"
     spec:
       containers:
         - name: water-controller
@@ -29,11 +27,15 @@ spec:
             - secretRef:
                 name:  "{{ .Release.Name }}-secrets"
           env:
+            - name: MQTT_USERNAME
+              value: {{ .Values.rabbitmq.auth.username }}
+            - name: MQTT_PASSWORD
+              value: {{ .Values.rabbitmq.auth.password }}
             - name: "HEALTH_CHECK_TYPE"
               value: "redis,pg,mqtt"
           livenessProbe:
             initialDelaySeconds: 20
-            periodSeconds: 5
+            periodSeconds: 10
             exec:
               command:
                 - python

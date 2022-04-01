@@ -13,8 +13,6 @@ spec:
       name: "{{ .Release.Name }}-influxdb"
       labels:
         app: "{{ .Release.Name }}-influxdb"
-      annotations:
-        release.revision: "{{ .Release.Revision }}"
     spec:
       containers:
         - name: influxdb

@@ -14,6 +14,9 @@ dependencies:
   - name: postgresql
     version: 11.1.4
     repository: https://charts.bitnami.com/bitnami
+  - name: rabbitmq
+    version: 8.30.4
+    repository: https://charts.bitnami.com/bitnami
 maintainers:
   - name: Shanmugathas Vigneswaran (github @shanisma)
     email: shanmugathas.vigneswaran@outlook.fr

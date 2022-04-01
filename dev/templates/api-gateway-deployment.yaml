@@ -9,8 +9,6 @@ spec:
   replicas: {{ .Values.api.replicas }}
   template:
     metadata:
-      annotations:
-        release.revision: "{{ .Release.Revision }}"
       labels:
         app: "{{ .Release.Name }}-api"
     spec:
@@ -50,6 +48,10 @@ spec:
           env:
             - name: "HEALTH_CHECK_TYPE"
               value: "all"
+            - name: MQTT_USERNAME
+              value: {{ .Values.rabbitmq.auth.username }}
+            - name: MQTT_PASSWORD
+              value: {{ .Values.rabbitmq.auth.password }}
           ports:
             - containerPort: 8080
               name: api
