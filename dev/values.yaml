@@ -5,28 +5,29 @@
 ogGlobal:
   microk8s:
     enableCustomIngress: false
-  coreImage: &core_img docker.io/shanisma/og-core:0.0.9
+  coreImage: &core_img docker.io/shanisma/og-core:0.0.10
   telegrafImage: &telegraf_img telegraf:1.20.4
-  storageClasse: &storage_class_name scw-bssd
+  storageClass: &storage_class_name scw-bssd
+  imagePullPolicy: &image_pull_policy "Always"
 
 sprinklerController:
   enable: "true"
   image: *core_img
-  imagePullPolicy: "IfNotPresent"
+  imagePullPolicy: *image_pull_policy
 
 waterController:
   enable: "true"
   image: *core_img
-  imagePullPolicy: "IfNotPresent"
+  imagePullPolicy: *image_pull_policy
 
 lightController:
   enable: "true"
   image: *core_img
-  imagePullPolicy: "IfNotPresent"
+  imagePullPolicy: *image_pull_policy
 
 celeryAsyncSharedWorker:
   image: *core_img
-  imagePullPolicy: "IfNotPresent"
+  imagePullPolicy: *image_pull_policy
   log:
     level: "info"
   replicas: 3
@@ -39,7 +40,7 @@ celeryAsyncSharedWorker:
 
 api:
   image: *core_img
-  imagePullPolicy: "Always"
+  imagePullPolicy: *image_pull_policy
   django:
     adminUsername: "admin"
     adminPassword: "admin"

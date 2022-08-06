@@ -41,7 +41,7 @@ tasks:
       - task i
 
   up:
-    desc: helm upgarde or install
+    desc: helm upgrade or install
     cmds:
       - helm upgrade og-test -f dev/values.yaml dev --namespace helm-test --create-namespace --debug --install
 

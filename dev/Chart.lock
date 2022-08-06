@@ -1,15 +1,15 @@
 dependencies:
 - name: grafana
   repository: https://grafana.github.io/helm-charts
-  version: 6.24.1
+  version: 6.29.6
 - name: redis
   repository: https://charts.bitnami.com/bitnami
-  version: 16.8.0
+  version: 16.11.3
 - name: postgresql
   repository: https://charts.bitnami.com/bitnami
-  version: 11.1.13
+  version: 11.6.3
 - name: rabbitmq
   repository: https://charts.bitnami.com/bitnami
-  version: 8.31.0
-digest: sha256:860a58532ef2c346d4102c645ace3849ed939f5565bee5e67902ece0421b8f8b
-generated: "2022-04-01T22:05:10.271437005+02:00"
+  version: 10.1.5
+digest: sha256:204d8ac911adea005cce7f9f1760ba75ef27105896764d0b2e7b54194579937e
+generated: "2022-06-08T09:37:39.464852115+02:00"
